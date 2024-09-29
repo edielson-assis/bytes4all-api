@@ -11,12 +11,16 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @EqualsAndHashCode(of = "personId")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Setter
 @Getter
@@ -34,11 +38,11 @@ public class Person implements Serializable {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Embedded
-    @Column(nullable = false, length = 100)
-    private Address address;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
+
+    @Embedded
+    @Column(nullable = false, length = 100)
+    private Address address;
 }
