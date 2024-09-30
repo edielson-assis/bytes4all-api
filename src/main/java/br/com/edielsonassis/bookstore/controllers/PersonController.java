@@ -3,7 +3,6 @@ package br.com.edielsonassis.bookstore.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
 import br.com.edielsonassis.bookstore.services.PersonService;
+import br.com.edielsonassis.bookstore.util.MediaType;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -27,26 +27,30 @@ public class PersonController {
 	private final PersonService service;
 
 	@Transactional
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
+			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<PersonVo> createPerson(@RequestBody PersonVo person) {
 		var savedPerson = service.createPerson(person);
         return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
 	}
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<PersonVo> findPersonById(@PathVariable(value = "id") Long id) {
 		var savedPerson = service.findPersonById(id);
         return new ResponseEntity<>(savedPerson, HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<List<PersonVo>> findAllPeolple() {
 		var people = service.findAllPeolple();
         return new ResponseEntity<>(people, HttpStatus.OK);
 	}
 
 	@Transactional
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(
+			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
+			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<PersonVo> updatePerson(@RequestBody PersonVo personVo) {
 		var person = service.updatePerson(personVo);
 		return new ResponseEntity<>(person, HttpStatus.OK);

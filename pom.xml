@@ -30,6 +30,8 @@
 		<java.version>17</java.version>
 		<spring-dotenv-version>4.0.0</spring-dotenv-version>
 		<modelmapper-version>3.2.1</modelmapper-version>
+		<jackson-xml-version>2.18.0</jackson-xml-version>
+		<jackson-yaml-version>2.17.2</jackson-yaml-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -72,6 +74,16 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>${modelmapper-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${jackson-xml-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>${jackson-yaml-version}</version>
 		</dependency>
 	</dependencies>
 
