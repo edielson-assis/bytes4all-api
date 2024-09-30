@@ -13,7 +13,7 @@ import br.com.edielsonassis.bookstore.mapper.Mapper;
 import br.com.edielsonassis.bookstore.model.Address;
 import br.com.edielsonassis.bookstore.model.Person;
 
-public class DozerConverterTest {
+public class ModelConverterTest {
     
     MockPerson inputObject;
 
