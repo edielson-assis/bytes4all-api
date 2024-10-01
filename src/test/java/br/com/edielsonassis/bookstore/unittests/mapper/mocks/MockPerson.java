@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.unittests.mapper;
+package br.com.edielsonassis.bookstore.unittests.mapper.mocks;
 
 import java.util.ArrayList;
 import java.util.List;

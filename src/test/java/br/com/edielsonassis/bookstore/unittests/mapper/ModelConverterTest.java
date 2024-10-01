@@ -12,6 +12,7 @@ import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
 import br.com.edielsonassis.bookstore.model.Address;
 import br.com.edielsonassis.bookstore.model.Person;
+import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
 
 public class ModelConverterTest {
     
