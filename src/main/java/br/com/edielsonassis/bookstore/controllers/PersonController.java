@@ -1,5 +1,8 @@
 package br.com.edielsonassis.bookstore.controllers;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -30,20 +33,24 @@ public class PersonController {
     @PostMapping(
 			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
 			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<PersonVo> createPerson(@RequestBody PersonVo person) {
-		var savedPerson = service.createPerson(person);
-        return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
+	public ResponseEntity<PersonVo> createPerson(@RequestBody PersonVo personVo) {
+		var person = service.createPerson(personVo);
+		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
+        return new ResponseEntity<>(person, HttpStatus.CREATED);
 	}
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<PersonVo> findPersonById(@PathVariable(value = "id") Long id) {
-		var savedPerson = service.findPersonById(id);
-        return new ResponseEntity<>(savedPerson, HttpStatus.OK);
+		var person = service.findPersonById(id);
+		person.add(linkTo(methodOn(PersonController.class).findPersonById(id)).withSelfRel());
+		person.add(linkTo(methodOn(PersonController.class).findAllPeople()).withRel("People List"));
+        return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<List<PersonVo>> findAllPeolple() {
-		var people = service.findAllPeolple();
+	public ResponseEntity<List<PersonVo>> findAllPeople() {
+		var people = service.findAllPeople();
+		people.stream().forEach(person -> person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel()));
         return new ResponseEntity<>(people, HttpStatus.OK);
 	}
 
@@ -53,6 +60,7 @@ public class PersonController {
 			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
 	public ResponseEntity<PersonVo> updatePerson(@RequestBody PersonVo personVo) {
 		var person = service.updatePerson(personVo);
+		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 	

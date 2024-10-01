@@ -71,7 +71,7 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parserVOListToEntityListTest() {
+    public void parseVOListToEntityListTest() {
         List<Person> outputList = Mapper.parseListObjects(inputObject.mockVOList(), Person.class);
         Person outputZero = outputList.get(0);
         

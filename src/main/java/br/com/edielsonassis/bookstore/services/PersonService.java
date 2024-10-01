@@ -37,7 +37,7 @@ public class PersonService {
         return Mapper.parseObject(person, PersonVo.class);
     }
 
-    public List<PersonVo> findAllPeolple() {
+    public List<PersonVo> findAllPeople() {
         log.info("Searching all people");
         return Mapper.parseListObjects(repository.findAll(), PersonVo.class);
     }
