@@ -37,6 +37,6 @@ public class Person implements Serializable {
     private Gender gender;
 
     @Embedded
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private Address address;
 }

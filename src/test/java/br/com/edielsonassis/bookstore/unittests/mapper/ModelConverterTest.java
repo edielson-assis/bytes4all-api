@@ -101,8 +101,6 @@ public class ModelConverterTest {
 
     private AddressVo addressVo(Integer number) {
         AddressVo addres = new AddressVo();
-        addres.setStreet("Street Test" + number);
-        addres.setNeighborhood("Neighborhood Test" + number);
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;
@@ -110,8 +108,6 @@ public class ModelConverterTest {
 
     private Address address(Integer number) {
         Address addres = new Address();
-        addres.setStreet("Street Test" + number);
-        addres.setNeighborhood("Neighborhood Test" + number);
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;

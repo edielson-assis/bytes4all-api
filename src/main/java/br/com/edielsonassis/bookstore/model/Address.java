@@ -13,16 +13,10 @@ import lombok.ToString;
 @Getter
 @Embeddable
 public class Address implements Serializable {
-    
-    @Column(nullable = false, length = 100)
-    private String street;
-
-    @Column(nullable = false, length = 50)
-    private String neighborhood;
 
     @Column(nullable = false, length = 30)
     private String city;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 2)
     private String state;
 }

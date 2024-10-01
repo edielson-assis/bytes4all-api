@@ -57,8 +57,6 @@ public class MockPerson {
 
     private AddressVo mockAddressVo(Integer number) {
         AddressVo addres = new AddressVo();
-        addres.setStreet("Street Test" + number);
-        addres.setNeighborhood("Neighborhood Test" + number);
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;
@@ -66,8 +64,6 @@ public class MockPerson {
 
     private Address mockAddress(Integer number) {
         Address addres = new Address();
-        addres.setStreet("Street Test" + number);
-        addres.setNeighborhood("Neighborhood Test" + number);
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;

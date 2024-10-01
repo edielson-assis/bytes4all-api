@@ -150,6 +150,7 @@ public class PersonServiceTest {
         assertEquals(addressVo(1).toString(), savedPerson.getAddress().toString());
         
         verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).save(any(Person.class));
     }
 
     @Test
@@ -161,6 +162,7 @@ public class PersonServiceTest {
         service.deletePerson(PERSON_ID);
         
         verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).delete(person);
     }
 
     @Test
@@ -171,13 +173,12 @@ public class PersonServiceTest {
         
         assertThrows(DatabaseException.class, () -> service.deletePerson(PERSON_ID));
         
+        verify(repository, times(1)).findById(anyLong());
         verify(repository, times(1)).delete(person);
     }
 
     private AddressVo addressVo(Integer number) {
         AddressVo addres = new AddressVo();
-        addres.setStreet("Street Test" + number);
-        addres.setNeighborhood("Neighborhood Test" + number);
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;
