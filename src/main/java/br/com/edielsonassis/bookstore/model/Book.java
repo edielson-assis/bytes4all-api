@@ -1,5 +1,6 @@
 package br.com.edielsonassis.bookstore.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Book {
+public class Book implements Serializable {
     
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

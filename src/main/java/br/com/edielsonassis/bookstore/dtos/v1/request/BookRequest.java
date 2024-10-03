@@ -1,6 +1,7 @@
 package br.com.edielsonassis.bookstore.dtos.v1.request;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,19 +20,19 @@ public class BookRequest implements Serializable {
 
     @Schema(description = "Name of the author", example = "Robert C. Martin", required = true)
 	@NotBlank(message = "Author is required")
-    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s']+$", message = "Only letters should be typed")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'.]+$", message = "Only letters should be typed")
     private String author;
 
     @Schema(description = "The date the book was launched", example = "2008-08-01", required = true)
 	@NotNull(message = "Launch date is required")
 	@PastOrPresent(message = "Invalid date")
-    private String launchDate;
+    private LocalDate launchDate;
 
     @Schema(description = "Title of the book", example = "Clean Code: A Handbook of Agile Software Craftsmanship", required = true)
     @NotBlank(message = "Title is required")
 	private String title;
 
-    @Schema(description = "A book that teaches software developers how to write clean, maintainable, and efficient code.", required = true)
+    @Schema(description = "Description of the book", example = "A book that teaches software developers how to write clean, maintainable, and efficient code.", required = true)
     @NotBlank(message = "Description is required")
 	private String description;
 }

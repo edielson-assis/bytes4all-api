@@ -37,7 +37,7 @@ public class BookService {
     }
 
     public List<BookResponse> findAllBooks() {
-        log.info("Searching all people");
+        log.info("Searching all books");
         return Mapper.parseListObjects(repository.findAll(), BookResponse.class);
     }
 
