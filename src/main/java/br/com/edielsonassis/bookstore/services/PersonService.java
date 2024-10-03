@@ -32,10 +32,7 @@ public class PersonService {
 
     public PersonResponse findPersonById(Long id) {
         log.info("Searching for person with ID: {}", id);
-        var person = repository.findById(id).orElseThrow(() -> {
-            log.error("Person ID not found: {}", id);
-            return new ObjectNotFoundException("Person not found");
-        });
+        var person = findById(id);
         return Mapper.parseObject(person, PersonResponse.class);
     }
 
@@ -64,6 +61,9 @@ public class PersonService {
     }
 
     private Person findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Person not found"));
+        return repository.findById(id).orElseThrow(() -> {
+            log.error("Person ID not found: {}", id);
+            return new ObjectNotFoundException("Person not found");
+        });
     }
 }
