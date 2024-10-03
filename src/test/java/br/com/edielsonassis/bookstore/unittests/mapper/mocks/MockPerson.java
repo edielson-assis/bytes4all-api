@@ -3,8 +3,9 @@ package br.com.edielsonassis.bookstore.unittests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.edielsonassis.bookstore.data.vo.v1.AddressVo;
-import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
+import br.com.edielsonassis.bookstore.dtos.v1.request.AddressRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
 import br.com.edielsonassis.bookstore.model.Address;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.model.enums.Gender;
@@ -15,22 +16,34 @@ public class MockPerson {
         return mockEntity(0);
     }
     
-    public PersonVo mockVO() {
-        return mockVO(0);
+    public PersonRequest mockDto() {
+        return mockDto(0);
+    }
+
+    public PersonUpdateRequest mockUpdateDto() {
+        return mockUpdateDto(0);
     }
     
     public List<Person> mockEntityList() {
-        List<Person> persons = new ArrayList<Person>();
+        List<Person> persons = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             persons.add(mockEntity(i));
         }
         return persons;
     }
 
-    public List<PersonVo> mockVOList() {
-        List<PersonVo> persons = new ArrayList<PersonVo>();
+    public List<PersonRequest> mockDtoList() {
+        List<PersonRequest> persons = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
-            persons.add(mockVO(i));
+            persons.add(mockDto(i));
+        }
+        return persons;
+    }
+
+    public List<PersonUpdateRequest> mockUpdateDtoList() {
+        List<PersonUpdateRequest> persons = new ArrayList<>();
+        for (int i = 0; i < 14; i++) {
+            persons.add(mockUpdateDto(i));
         }
         return persons;
     }
@@ -45,21 +58,27 @@ public class MockPerson {
         return person;
     }
 
-    public PersonVo mockVO(Integer number) {
-        PersonVo person = new PersonVo();
-        person.setAddress(mockAddressVo(number));
-        person.setFirstName("First Name Test" + number);
-        person.setGender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE);
-        person.setPersonId(number.longValue());
-        person.setLastName("Last Name Test" + number);
-        return person;
+    public PersonRequest mockDto(Integer number) {
+        return PersonRequest.builder()
+                .firstName("First Name Test" + number)
+                .lastName("Last Name Test" + number)
+                .gender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE)
+                .address(mockAddressDto(number)).build();
     }
 
-    private AddressVo mockAddressVo(Integer number) {
-        AddressVo addres = new AddressVo();
-        addres.setCity("City Test" + number);
-        addres.setState("State Test" + number);
-        return addres;
+    public PersonUpdateRequest mockUpdateDto(Integer number) {
+        return PersonUpdateRequest.builder()
+                .personId(number.longValue())
+                .firstName("First Name Test" + number)
+                .lastName("Last Name Test" + number)
+                .gender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE)
+                .address(mockAddressDto(number)).build();
+    }
+
+    private AddressRequest mockAddressDto(Integer number) {
+        return AddressRequest.builder()
+                .city("City Test" + number)
+                .state("State Test" + number).build();
     }
 
     private Address mockAddress(Integer number) {

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.edielsonassis.bookstore.controllers.swagger.PersonControllerSwagger;
-import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import br.com.edielsonassis.bookstore.services.PersonService;
 import br.com.edielsonassis.bookstore.util.MediaType;
 import jakarta.transaction.Transactional;
@@ -26,24 +28,26 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/person")
+@RequestMapping(value = "/api/v1/person")
 public class PersonController implements PersonControllerSwagger {
 	
 	private final PersonService service;
 
 	@Transactional
-    @PostMapping(
-			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
-			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
-		)
-	public ResponseEntity<PersonVo> createPerson(@Valid @RequestBody PersonVo personVo) {
-		var person = service.createPerson(personVo);
+    @PostMapping(path = "/create",
+		consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
+		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
+	)
+	@Override
+	public ResponseEntity<PersonResponse> createPerson(@Valid @RequestBody PersonRequest personRequest) {
+		var person = service.createPerson(personRequest);
 		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
         return new ResponseEntity<>(person, HttpStatus.CREATED);
 	}
 
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<PersonVo> findPersonById(@PathVariable(value = "id") Long id) {
+    @GetMapping(path = "/get/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
+	@Override
+	public ResponseEntity<PersonResponse> findPersonById(@PathVariable(value = "id") Long id) {
 		var person = service.findPersonById(id);
 		person.add(linkTo(methodOn(PersonController.class).findPersonById(id)).withSelfRel());
 		person.add(linkTo(methodOn(PersonController.class).findAllPeople()).withRel("People List"));
@@ -51,25 +55,28 @@ public class PersonController implements PersonControllerSwagger {
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<List<PersonVo>> findAllPeople() {
+	@Override
+	public ResponseEntity<List<PersonResponse>> findAllPeople() {
 		var people = service.findAllPeople();
 		people.stream().forEach(person -> person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel()));
         return new ResponseEntity<>(people, HttpStatus.OK);
 	}
 
 	@Transactional
-	@PutMapping(
-			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
-			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
-		)
-	public ResponseEntity<PersonVo> updatePerson(@Valid @RequestBody PersonVo personVo) {
-		var person = service.updatePerson(personVo);
+	@PutMapping(path = "update",
+		consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
+		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
+	)
+	@Override
+	public ResponseEntity<PersonResponse> updatePerson(@Valid @RequestBody PersonUpdateRequest personRequest) {
+		var person = service.updatePerson(personRequest);
 		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 	
 	@Transactional
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(path = "/delete/{id}")
+	@Override
 	public ResponseEntity<Void> deletePerson(@PathVariable(value = "id") Long id) {
 		service.deletePerson(id);
 		return ResponseEntity.noContent().build();

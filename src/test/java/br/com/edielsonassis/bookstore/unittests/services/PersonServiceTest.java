@@ -25,8 +25,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import br.com.edielsonassis.bookstore.data.vo.v1.AddressVo;
-import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.repositories.PersonRepository;
 import br.com.edielsonassis.bookstore.services.PersonService;
@@ -45,23 +46,24 @@ public class PersonServiceTest {
     private PersonService service;
 
     private Person person;
-    private PersonVo personVo;
+    private PersonRequest personRequest;
     private MockPerson input;
     private static final Long PERSON_ID = 1L;
+    private static final Integer NUMBER_ONE = 1;
 
     @BeforeEach
     void setup() {
         input = new MockPerson();
-        person = input.mockEntity(1);
-        personVo = input.mockVO(1);
+        person = input.mockEntity(NUMBER_ONE);
+        personRequest = input.mockDto(NUMBER_ONE);
     }
 
     @Test
-    @DisplayName("When create person then return person VO")
-    void testWhenCreatePersonThenReturnPersonVO() {
+    @DisplayName("When create person then return PersonResponse")
+    void testWhenCreatePersonThenReturnPersonResponse() {
         when(repository.save(any(Person.class))).thenReturn(person);
 
-        var savedPerson = service.createPerson(personVo);
+        var savedPerson = service.createPerson(personRequest);
 
         assertNotNull(savedPerson);
         assertNotNull(savedPerson.getPersonId());
@@ -70,14 +72,14 @@ public class PersonServiceTest {
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
         assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(addressVo(1).toString(), savedPerson.getAddress().toString());
+        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
         
-        verify(repository, times(1)).save(any(Person.class));
+        verify(repository, times(NUMBER_ONE)).save(any(Person.class));
     }
 
     @Test
-    @DisplayName("When find person by ID then return person VO")
-    void testWhenFindPersonByIdThenReturnPersonVO() {
+    @DisplayName("When find person by ID then return PersonResponse")
+    void testWhenFindPersonByIdThenReturnPersonResponse() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(person));
 
         var savedPerson = service.findPersonById(PERSON_ID);
@@ -89,9 +91,9 @@ public class PersonServiceTest {
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
         assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(addressVo(1).toString(), savedPerson.getAddress().toString());
+        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
         
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(NUMBER_ONE)).findById(anyLong());
     }
 
     @Test
@@ -101,12 +103,12 @@ public class PersonServiceTest {
 
         assertThrows(ObjectNotFoundException.class, () -> service.findPersonById(PERSON_ID));
         
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(NUMBER_ONE)).findById(anyLong());
     }
 
     @Test
-    @DisplayName("When find all people then return people VO list")
-    void testWhenFindAllPeopleThenReturnPeopleVOList() {
+    @DisplayName("When find all people then return PersonResponse list")
+    void testWhenFindAllPeopleThenReturnPersonResponseList() {
         List<Person> list = input.mockEntityList(); 
 
         when(repository.findAll()).thenReturn(list);
@@ -116,7 +118,7 @@ public class PersonServiceTest {
         assertNotNull(people);
 		assertEquals(14, people.size());
 		
-		var personOne = people.get(1);
+		var personOne = people.get(NUMBER_ONE);
 		
 		assertNotNull(personOne);
         assertNotNull(personOne.getPersonId());
@@ -125,20 +127,21 @@ public class PersonServiceTest {
         assertEquals("First Name Test1", personOne.getFirstName());
 		assertEquals("Last Name Test1", personOne.getLastName());
         assertEquals("FEMALE", personOne.getGender().name());
-        assertEquals(addressVo(1).toString(), personOne.getAddress().toString());
+        assertEquals(address(NUMBER_ONE).toString(), personOne.getAddress().toString());
         
-        verify(repository, times(1)).findAll();
+        verify(repository, times(NUMBER_ONE)).findAll();
     }
 
     @Test
-    @DisplayName("When update person then return person VO")
-    void testWhenUpdatePersonThenReturnPersonVO() {
-        Person updatedPerson = input.mockEntity(1);
+    @DisplayName("When update person then return PersonResponse")
+    void testWhenUpdatePersonThenReturnPersonResponse() {
+        Person updatedPerson = input.mockEntity(NUMBER_ONE);
+        PersonUpdateRequest personRequest = input.mockUpdateDto(NUMBER_ONE);
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(person));
         when(repository.save(any(Person.class))).thenReturn(updatedPerson);
 
-        var savedPerson = service.updatePerson(personVo);
+        var savedPerson = service.updatePerson(personRequest);
 
         assertNotNull(savedPerson);
         assertNotNull(savedPerson.getPersonId());
@@ -147,10 +150,10 @@ public class PersonServiceTest {
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
         assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(addressVo(1).toString(), savedPerson.getAddress().toString());
+        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
         
-        verify(repository, times(1)).findById(anyLong());
-        verify(repository, times(1)).save(any(Person.class));
+        verify(repository, times(NUMBER_ONE)).findById(anyLong());
+        verify(repository, times(NUMBER_ONE)).save(any(Person.class));
     }
 
     @Test
@@ -161,8 +164,8 @@ public class PersonServiceTest {
 
         service.deletePerson(PERSON_ID);
         
-        verify(repository, times(1)).findById(anyLong());
-        verify(repository, times(1)).delete(person);
+        verify(repository, times(NUMBER_ONE)).findById(anyLong());
+        verify(repository, times(NUMBER_ONE)).delete(person);
     }
 
     @Test
@@ -173,12 +176,12 @@ public class PersonServiceTest {
         
         assertThrows(DataBaseException.class, () -> service.deletePerson(PERSON_ID));
         
-        verify(repository, times(1)).findById(anyLong());
-        verify(repository, times(1)).delete(person);
+        verify(repository, times(NUMBER_ONE)).findById(anyLong());
+        verify(repository, times(NUMBER_ONE)).delete(person);
     }
 
-    private AddressVo addressVo(Integer number) {
-        AddressVo addres = new AddressVo();
+    private AddressResponse address(Integer number) {
+        AddressResponse addres = new AddressResponse();
         addres.setCity("City Test" + number);
         addres.setState("State Test" + number);
         return addres;

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -22,13 +24,13 @@ public interface PersonControllerSwagger {
 		tags = {"People"},
 		responses = {
 			@ApiResponse(responseCode = "201", description = "Created person",
-				content = @Content(schema = @Schema(implementation = PersonVo.class))),
+				content = @Content(schema = @Schema(implementation = PersonResponse.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request - Something is wrong with the request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<PersonVo> createPerson(PersonVo personVo);
+    ResponseEntity<PersonResponse> createPerson(PersonRequest personRequest);
 
     @Operation(
         summary = "Finds a Person",
@@ -36,25 +38,25 @@ public interface PersonControllerSwagger {
 		tags = {"People"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
-				content = @Content(schema = @Schema(implementation = PersonVo.class))),
+				content = @Content(schema = @Schema(implementation = PersonResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found - Person not found", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<PersonVo> findPersonById(@Parameter(description = "The Id of the person to find.") Long id);
+    ResponseEntity<PersonResponse> findPersonById(@Parameter(description = "The Id of the person to find.") Long id);
 
     @Operation(
         summary = "Finds all People", description = "Finds all People",
 		tags = {"People"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
-				content = @Content(array = @ArraySchema(schema = @Schema(implementation = PersonVo.class)))),
+				content = @Content(array = @ArraySchema(schema = @Schema(implementation = PersonResponse.class)))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<List<PersonVo>> findAllPeople();
+    ResponseEntity<List<PersonResponse>> findAllPeople();
 
     @Operation(
         summary = "Updates a Person",
@@ -62,14 +64,14 @@ public interface PersonControllerSwagger {
 		tags = {"People"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Updated person", 
-				content = @Content(schema = @Schema(implementation = PersonVo.class))),
+				content = @Content(schema = @Schema(implementation = PersonResponse.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request - Something is wrong with the request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found - Person not found", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<PersonVo> updatePerson(PersonVo personVo);
+    ResponseEntity<PersonResponse> updatePerson(PersonUpdateRequest personRequest);
 
     @Operation(
         summary = "Deletes a Person",
