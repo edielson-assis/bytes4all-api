@@ -16,12 +16,12 @@ import lombok.Setter;
 @Schema(description = "Represents an address")
 public class AddressRequest implements Serializable {
 
-    @Schema(description = "City where the person lives", example = "New York", maxLength = 100)
+    @Schema(description = "City where the person lives", example = "New York", maxLength = 100, required = true)
     @NotBlank(message = "City is required")
     @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s']+$", message = "Only letters should be typed")
     private String city;
 
-    @Schema(description = "State where the person lives (2-letter abbreviation)", example = "NY", maxLength = 2)
+    @Schema(description = "State where the person lives (2-letter abbreviation)", example = "NY", maxLength = 2, required = true)
     @NotBlank(message = "State is required")
     @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s']+$", message = "Only letters should be typed")
     @Size(max = 2, message = "State must have at most {max} characters")
