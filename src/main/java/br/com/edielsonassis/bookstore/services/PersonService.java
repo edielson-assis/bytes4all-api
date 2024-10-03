@@ -9,7 +9,7 @@ import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.repositories.PersonRepository;
-import br.com.edielsonassis.bookstore.services.exceptions.DatabaseException;
+import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +57,7 @@ public class PersonService {
             log.info("Person with name: {} successfully deleted", person.getFirstName());
         } catch (DataIntegrityViolationException e) {
             log.error("Failed to delete person with name: {} due to referential integrity violation", person.getFirstName(), e);
-            throw new DatabaseException(e.getMessage());
+            throw new DataBaseException(e.getMessage());
         }
     }
 

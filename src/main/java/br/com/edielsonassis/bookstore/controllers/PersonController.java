@@ -16,24 +16,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.edielsonassis.bookstore.controllers.swagger.PersonControllerSwagger;
 import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
 import br.com.edielsonassis.bookstore.services.PersonService;
 import br.com.edielsonassis.bookstore.util.MediaType;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/person")
-public class PersonController {
+public class PersonController implements PersonControllerSwagger {
 	
 	private final PersonService service;
 
 	@Transactional
     @PostMapping(
 			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
-			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<PersonVo> createPerson(@RequestBody PersonVo personVo) {
+			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
+		)
+	public ResponseEntity<PersonVo> createPerson(@Valid @RequestBody PersonVo personVo) {
 		var person = service.createPerson(personVo);
 		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
         return new ResponseEntity<>(person, HttpStatus.CREATED);
@@ -57,8 +60,9 @@ public class PersonController {
 	@Transactional
 	@PutMapping(
 			consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
-			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
-	public ResponseEntity<PersonVo> updatePerson(@RequestBody PersonVo personVo) {
+			produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
+		)
+	public ResponseEntity<PersonVo> updatePerson(@Valid @RequestBody PersonVo personVo) {
 		var person = service.updatePerson(personVo);
 		person.add(linkTo(methodOn(PersonController.class).findPersonById(person.getPersonId())).withSelfRel());
 		return new ResponseEntity<>(person, HttpStatus.OK);

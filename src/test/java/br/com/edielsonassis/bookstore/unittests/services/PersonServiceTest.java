@@ -30,7 +30,7 @@ import br.com.edielsonassis.bookstore.data.vo.v1.PersonVo;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.repositories.PersonRepository;
 import br.com.edielsonassis.bookstore.services.PersonService;
-import br.com.edielsonassis.bookstore.services.exceptions.DatabaseException;
+import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
 
@@ -171,7 +171,7 @@ public class PersonServiceTest {
         when(repository.findById(anyLong())).thenReturn(Optional.of(person));
         doThrow(new DataIntegrityViolationException("Referential integrity violation")).when(repository).delete(person);
         
-        assertThrows(DatabaseException.class, () -> service.deletePerson(PERSON_ID));
+        assertThrows(DataBaseException.class, () -> service.deletePerson(PERSON_ID));
         
         verify(repository, times(1)).findById(anyLong());
         verify(repository, times(1)).delete(person);

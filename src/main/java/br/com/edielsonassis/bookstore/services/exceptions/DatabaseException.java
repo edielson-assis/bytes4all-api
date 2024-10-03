@@ -1,8 +1,8 @@
 package br.com.edielsonassis.bookstore.services.exceptions;
 
-public class DatabaseException extends RuntimeException {
+public class DataBaseException extends RuntimeException {
     
-    public DatabaseException(String msg) {
+    public DataBaseException(String msg) {
         super(msg);
     }
 }
