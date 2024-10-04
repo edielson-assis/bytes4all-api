@@ -127,8 +127,8 @@ class PersonControllerTest {
     @Test
     @DisplayName("When update person then return PersonResponse")
     void testWhenUpdatePersonThenReturnPersonResponse() throws JsonProcessingException, Exception {
-        person.setFirstName("First Name Outro Test");
-        person.setLastName("Last Name Outro Test");
+        person.setFirstName("New First Name Test");
+        person.setLastName("New Last Name Test");
         person.setGender(Gender.FEMALE);
         person.setAddress(mockAddress());
 
