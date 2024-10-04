@@ -63,7 +63,7 @@ public class PersonController implements PersonControllerSwagger {
 	}
 
 	@Transactional
-	@PutMapping(path = "update",
+	@PutMapping(path = "/update",
 		consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
 		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
 	)
