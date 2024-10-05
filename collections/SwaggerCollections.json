@@ -1,0 +1,891 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Bytes4All",
+    "description": "RestFul API of the Bytes4All application. The API allows users to upload and download files",
+    "termsOfService": "https://edielsonassis.com.br/termos-a-serem-definidos",
+    "contact": {
+      "name": "Edielson Assis",
+      "email": "grizos.ed@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/edielson-assis/bytes4all-api/blob/main/LICENSE"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "People",
+      "description": "Endpoints for Managing People"
+    },
+    {
+      "name": "Books",
+      "description": "Endpoints for Managing Books"
+    }
+  ],
+  "paths": {
+    "/api/v1/person/update": {
+      "put": {
+        "tags": [
+          "People"
+        ],
+        "summary": "Updates a Person",
+        "description": "Updates a Person by passing in a JSON, XML or YML representation of the person!",
+        "operationId": "updatePerson",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonUpdateRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonUpdateRequest"
+              }
+            },
+            "application/x-yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated person",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Something is wrong with the request"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Person not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/book/update": {
+      "put": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Updates a Book",
+        "description": "Updates a Book by passing in a JSON, XML or YML representation of the book!",
+        "operationId": "updateBook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookUpdateRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/BookUpdateRequest"
+              }
+            },
+            "application/x-yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/BookUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Something is wrong with the request"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Book not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/create": {
+      "post": {
+        "tags": [
+          "People"
+        ],
+        "summary": "Adds a new Person",
+        "description": "Adds a new Person by passing in a JSON, XML or YML representation of the person!",
+        "operationId": "createPerson",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonRequest"
+              }
+            },
+            "application/x-yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created person",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Something is wrong with the request"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/book/create": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Adds a new Book",
+        "description": "Adds a new Book by passing in a JSON, XML or YML representation of the book!",
+        "operationId": "createBook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            },
+            "application/x-yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Something is wrong with the request"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/person": {
+      "get": {
+        "tags": [
+          "People"
+        ],
+        "summary": "Finds all People",
+        "description": "Finds all People",
+        "operationId": "findAllPeople",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonResponse"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonResponse"
+                  }
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/get/{id}": {
+      "get": {
+        "tags": [
+          "People"
+        ],
+        "summary": "Finds a Person",
+        "description": "Finds a person by their Id",
+        "operationId": "findPersonById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the person to find.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Person not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/book": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Finds all Books",
+        "description": "Finds all Books",
+        "operationId": "findAllBooks",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/book/get/{id}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Finds a Book",
+        "description": "Finds a book by their Id",
+        "operationId": "findBookById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the book to find.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              },
+              "application/x-yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Book not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/delete/{id}": {
+      "delete": {
+        "tags": [
+          "People"
+        ],
+        "summary": "Deletes a Person",
+        "description": "Deletes a Person by their Id",
+        "operationId": "deletePerson",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the person to find.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted person"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Person not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/book/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Deletes a Book",
+        "description": "Deletes a Book by their Id",
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the book to find.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted book"
+          },
+          "403": {
+            "description": "Forbidden - Authentication problem"
+          },
+          "404": {
+            "description": "Not found - Book not found"
+          },
+          "500": {
+            "description": "Internal Server Error - Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddressResponse": {
+        "required": [
+          "city",
+          "state"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "City where the person lives",
+            "example": "New York"
+          },
+          "state": {
+            "maxLength": 2,
+            "type": "string",
+            "description": "State where the person lives (2-letter abbreviation)",
+            "example": "NY"
+          }
+        },
+        "description": "Represents an address"
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
+      "PersonResponse": {
+        "required": [
+          "firstName",
+          "gender",
+          "lastName",
+          "personId"
+        ],
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "integer",
+            "description": "Unique identifier of the person",
+            "format": "int64",
+            "example": 1
+          },
+          "firstName": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "First name of the person",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Last name of the person",
+            "example": "Smith"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the person",
+            "example": "MALE",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressResponse"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "description": "Represents a person"
+      },
+      "AddressRequest": {
+        "required": [
+          "city",
+          "state"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "maxLength": 100,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "City where the person lives",
+            "example": "New York"
+          },
+          "state": {
+            "maxLength": 2,
+            "minLength": 0,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "State where the person lives (2-letter abbreviation)",
+            "example": "NY"
+          }
+        },
+        "description": "Represents an address"
+      },
+      "PersonUpdateRequest": {
+        "required": [
+          "firstName",
+          "gender",
+          "lastName",
+          "personId"
+        ],
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "integer",
+            "description": "Unique identifier of the person",
+            "format": "int64",
+            "example": 1
+          },
+          "firstName": {
+            "maxLength": 2147483647,
+            "minLength": 3,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "First name of the person",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 2147483647,
+            "minLength": 3,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "Last name of the person",
+            "example": "Smith"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the person",
+            "example": "MALE",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressRequest"
+          }
+        },
+        "description": "Represents a person"
+      },
+      "BookResponse": {
+        "required": [
+          "author",
+          "bookId",
+          "description",
+          "launchDate",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "description": "Unique identifier of the book",
+            "format": "int64",
+            "example": 1
+          },
+          "author": {
+            "type": "string",
+            "description": "Name of the author",
+            "example": "Robert C. Martin"
+          },
+          "launchDate": {
+            "type": "string",
+            "description": "The date the book was launched",
+            "format": "date",
+            "example": "2008-08-01"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the book",
+            "example": "Clean Code: A Handbook of Agile Software Craftsmanship"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the book",
+            "example": "A book that teaches software developers how to write clean, maintainable, and efficient code."
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "description": "Represents a book"
+      },
+      "BookUpdateRequest": {
+        "required": [
+          "author",
+          "bookId",
+          "description",
+          "launchDate",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "description": "Unique identifier of the book",
+            "format": "int64",
+            "example": 1
+          },
+          "author": {
+            "pattern": "^[a-zA-ZÀ-ÿ\\s'.]+$",
+            "type": "string",
+            "description": "Name of the author",
+            "example": "Robert C. Martin"
+          },
+          "launchDate": {
+            "type": "string",
+            "description": "The date the book was launched",
+            "format": "date",
+            "example": "2008-08-01"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the book",
+            "example": "Clean Code: A Handbook of Agile Software Craftsmanship"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the book",
+            "example": "A book that teaches software developers how to write clean, maintainable, and efficient code."
+          }
+        },
+        "description": "Represents a book"
+      },
+      "PersonRequest": {
+        "required": [
+          "firstName",
+          "gender",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 2147483647,
+            "minLength": 3,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "First name of the person",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 2147483647,
+            "minLength": 3,
+            "pattern": "^[a-zA-ZÀ-ÿ\\s']+$",
+            "type": "string",
+            "description": "Last name of the person",
+            "example": "Smith"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the person",
+            "example": "MALE",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressRequest"
+          }
+        },
+        "description": "Represents a person"
+      },
+      "BookRequest": {
+        "required": [
+          "author",
+          "description",
+          "launchDate",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "author": {
+            "pattern": "^[a-zA-ZÀ-ÿ\\s'.]+$",
+            "type": "string",
+            "description": "Name of the author",
+            "example": "Robert C. Martin"
+          },
+          "launchDate": {
+            "type": "string",
+            "description": "The date the book was launched",
+            "format": "date",
+            "example": "2008-08-01"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the book",
+            "example": "Clean Code: A Handbook of Agile Software Craftsmanship"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the book",
+            "example": "A book that teaches software developers how to write clean, maintainable, and efficient code."
+          }
+        },
+        "description": "Represents a book"
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.com.edielsonassis.bookstore.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.AbstractIntegrationTest;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = {"server.port=8888"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class SwaggerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
