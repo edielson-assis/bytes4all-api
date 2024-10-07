@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.integrationstests;
+package br.com.edielsonassis.bookstore.integrationstests.config;
 
 import java.util.Map;
 import java.util.stream.Stream;

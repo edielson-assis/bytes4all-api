@@ -4,12 +4,14 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.edielsonassis.bookstore.config.TestConfig;
-import br.com.edielsonassis.bookstore.integrationstests.AbstractIntegrationTest;
+import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
 
+@Order(6)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class SwaggerIntegrationTest extends AbstractIntegrationTest {
 

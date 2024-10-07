@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +36,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
 import br.com.edielsonassis.bookstore.services.BookService;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 
+@Order(5)
 @WebMvcTest(BookController.class)
 class BookControllerTest {
 
@@ -142,8 +144,8 @@ class BookControllerTest {
     }
 
     @Test
-    @DisplayName("When delete book then throw DatabaseException")
-    void testWhenDeleteBookThenThrowDatabaseException() throws JsonProcessingException, Exception {
+    @DisplayName("When delete book then return no content")
+    void testWhenDeleteBookThenReturnNoContent() throws JsonProcessingException, Exception {
         willDoNothing().given(service).deleteBook(PERSON_ID);
 
         ResultActions response = mockMvc.perform(delete(PATH.concat("/delete/{id}"), PERSON_ID));

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
@@ -14,6 +15,7 @@ import br.com.edielsonassis.bookstore.model.Address;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
 
+@Order(1)
 public class ModelConverterTest {
     
     MockPerson inputObject;
