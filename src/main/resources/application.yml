@@ -1,3 +1,9 @@
+cors:
+  allowedMappings: ${ALLOWED_MAPPINGS}
+  allowedOrigins: ${ALLOWED_ORIGINS}
+  allowedMethods: ${ALLOWED_METHODS}
+  allowedHeaders: ${ALLOWED_HEADERS}
+  maxAge: ${MAX_AGE}
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
