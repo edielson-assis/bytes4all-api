@@ -55,7 +55,7 @@ public class PersonService {
             repository.delete(person);
             log.info("Person with name: {} successfully deleted", person.getFirstName());
         } catch (DataIntegrityViolationException e) {
-            log.error("Failed to delete person with name: {} due to referential integrity violation", person.getFirstName(), e);
+            log.error("Failed to delete person with name: {} due to referential integrity violation", person.getFirstName(), e.getMessage());
             throw new DataBaseException(e.getMessage());
         }
     }

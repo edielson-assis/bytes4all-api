@@ -78,13 +78,13 @@ public class MockPerson {
     private AddressRequest mockAddressDto(Integer number) {
         return AddressRequest.builder()
                 .city("City Test" + number)
-                .state("State Test" + number).build();
+                .state("ST" + number).build();
     }
 
     private Address mockAddress(Integer number) {
         Address addres = new Address();
         addres.setCity("City Test" + number);
-        addres.setState("State Test" + number);
+        addres.setState("ST" + number);
         return addres;
     }
 }

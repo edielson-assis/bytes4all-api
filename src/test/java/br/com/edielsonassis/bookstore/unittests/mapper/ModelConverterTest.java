@@ -31,8 +31,8 @@ public class ModelConverterTest {
         assertEquals(Long.valueOf(0L), output.getPersonId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(addressDto(0).toString(), output.getAddress().toString());
-        assertEquals("MALE", output.getGender().name());
+        assertEquals(addressDto(0), output.getAddress().toString());
+        assertEquals("Male", output.getGender().getValue());
     }
 
     @Test
@@ -43,24 +43,24 @@ public class ModelConverterTest {
         assertEquals(Long.valueOf(0L), outputZero.getPersonId());
         assertEquals("First Name Test0", outputZero.getFirstName());
         assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(addressDto(0).toString(), outputZero.getAddress().toString());
-        assertEquals("MALE", outputZero.getGender().name());
+        assertEquals(addressDto(0), outputZero.getAddress().toString());
+        assertEquals("Male", outputZero.getGender().getValue());
         
         PersonResponse outputSeven = outputList.get(7);
         
         assertEquals(Long.valueOf(7L), outputSeven.getPersonId());
         assertEquals("First Name Test7", outputSeven.getFirstName());
         assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(addressDto(7).toString(), outputSeven.getAddress().toString());
-        assertEquals("FEMALE", outputSeven.getGender().name());
+        assertEquals(addressDto(7), outputSeven.getAddress().toString());
+        assertEquals("Female", outputSeven.getGender().getValue());
         
         PersonResponse outputTwelve = outputList.get(12);
         
         assertEquals(Long.valueOf(12L), outputTwelve.getPersonId());
         assertEquals("First Name Test12", outputTwelve.getFirstName());
         assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(addressDto(12).toString(), outputTwelve.getAddress().toString());
-        assertEquals("MALE", outputTwelve.getGender().name());
+        assertEquals(addressDto(12), outputTwelve.getAddress().toString());
+        assertEquals("Male", outputTwelve.getGender().getValue());
     }
 
     @Test
@@ -68,8 +68,8 @@ public class ModelConverterTest {
         Person output = Mapper.parseObject(inputObject.mockDto(), Person.class);
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(address(0).toString(), output.getAddress().toString());
-        assertEquals("MALE", output.getGender().name());
+        assertEquals(address(0), output.getAddress().toString());
+        assertEquals("Male", output.getGender().getValue());
     }
 
     @Test
@@ -79,22 +79,22 @@ public class ModelConverterTest {
         
         assertEquals("First Name Test0", outputZero.getFirstName());
         assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(address(0).toString(), outputZero.getAddress().toString());
-        assertEquals("MALE", outputZero.getGender().name());
+        assertEquals(address(0), outputZero.getAddress().toString());
+        assertEquals("Male", outputZero.getGender().getValue());
         
         Person outputSeven = outputList.get(7);
         
         assertEquals("First Name Test7", outputSeven.getFirstName());
         assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(address(7).toString(), outputSeven.getAddress().toString());
-        assertEquals("FEMALE", outputSeven.getGender().name());
+        assertEquals(address(7), outputSeven.getAddress().toString());
+        assertEquals("Female", outputSeven.getGender().getValue());
         
         Person outputTwelve = outputList.get(12);
         
         assertEquals("First Name Test12", outputTwelve.getFirstName());
         assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(address(12).toString(), outputTwelve.getAddress().toString());
-        assertEquals("MALE", outputTwelve.getGender().name());
+        assertEquals(address(12), outputTwelve.getAddress().toString());
+        assertEquals("Male", outputTwelve.getGender().getValue());
     }
 
     @Test
@@ -103,8 +103,8 @@ public class ModelConverterTest {
         assertEquals(Long.valueOf(0L), output.getPersonId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(address(0).toString(), output.getAddress().toString());
-        assertEquals("MALE", output.getGender().name());
+        assertEquals(address(0), output.getAddress().toString());
+        assertEquals("Male", output.getGender().getValue());
     }
 
     @Test
@@ -115,37 +115,37 @@ public class ModelConverterTest {
         assertEquals(Long.valueOf(0L), outputZero.getPersonId());
         assertEquals("First Name Test0", outputZero.getFirstName());
         assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(address(0).toString(), outputZero.getAddress().toString());
-        assertEquals("MALE", outputZero.getGender().name());
+        assertEquals(address(0), outputZero.getAddress().toString());
+        assertEquals("Male", outputZero.getGender().getValue());
         
         Person outputSeven = outputList.get(7);
         
         assertEquals(Long.valueOf(7L), outputSeven.getPersonId());
         assertEquals("First Name Test7", outputSeven.getFirstName());
         assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(address(7).toString(), outputSeven.getAddress().toString());
-        assertEquals("FEMALE", outputSeven.getGender().name());
+        assertEquals(address(7), outputSeven.getAddress().toString());
+        assertEquals("Female", outputSeven.getGender().getValue());
         
         Person outputTwelve = outputList.get(12);
         
         assertEquals(Long.valueOf(12L), outputTwelve.getPersonId());
         assertEquals("First Name Test12", outputTwelve.getFirstName());
         assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(address(12).toString(), outputTwelve.getAddress().toString());
-        assertEquals("MALE", outputTwelve.getGender().name());
+        assertEquals(address(12), outputTwelve.getAddress().toString());
+        assertEquals("Male", outputTwelve.getGender().getValue());
     }
 
-    private AddressResponse addressDto(Integer number) {
+    private String addressDto(Integer number) {
         AddressResponse addres = new AddressResponse();
         addres.setCity("City Test" + number);
-        addres.setState("State Test" + number);
-        return addres;
+        addres.setState("ST" + number);
+        return addres.toString();
     }
 
-    private Address address(Integer number) {
+    private String address(Integer number) {
         Address addres = new Address();
         addres.setCity("City Test" + number);
-        addres.setState("State Test" + number);
-        return addres;
+        addres.setState("ST" + number);
+        return addres.toString();
     }
 }

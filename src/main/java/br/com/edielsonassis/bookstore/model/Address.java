@@ -19,4 +19,8 @@ public class Address implements Serializable {
 
     @Column(nullable = false, length = 2)
     private String state;
+
+    public void setState(String state) {
+        this.state = state.toUpperCase();
+    }
 }

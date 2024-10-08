@@ -73,8 +73,8 @@ public class PersonServiceTest {
 
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
-        assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
+        assertEquals("Female", savedPerson.getGender().getValue());
+        assertEquals(address(NUMBER_ONE), savedPerson.getAddress().toString());
         
         verify(repository, times(NUMBER_ONE)).save(any(Person.class));
     }
@@ -92,8 +92,8 @@ public class PersonServiceTest {
 
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
-        assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
+        assertEquals("Female", savedPerson.getGender().getValue());
+        assertEquals(address(NUMBER_ONE), savedPerson.getAddress().toString());
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
     }
@@ -128,8 +128,8 @@ public class PersonServiceTest {
 
         assertEquals("First Name Test1", personOne.getFirstName());
 		assertEquals("Last Name Test1", personOne.getLastName());
-        assertEquals("FEMALE", personOne.getGender().name());
-        assertEquals(address(NUMBER_ONE).toString(), personOne.getAddress().toString());
+        assertEquals("Female", personOne.getGender().getValue());
+        assertEquals(address(NUMBER_ONE), personOne.getAddress().toString());
         
         verify(repository, times(NUMBER_ONE)).findAll();
     }
@@ -151,8 +151,8 @@ public class PersonServiceTest {
 
         assertEquals("First Name Test1", savedPerson.getFirstName());
 		assertEquals("Last Name Test1", savedPerson.getLastName());
-        assertEquals("FEMALE", savedPerson.getGender().name());
-        assertEquals(address(NUMBER_ONE).toString(), savedPerson.getAddress().toString());
+        assertEquals("Female", savedPerson.getGender().getValue());
+        assertEquals(address(NUMBER_ONE), savedPerson.getAddress().toString());
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
         verify(repository, times(NUMBER_ONE)).save(any(Person.class));
@@ -182,10 +182,10 @@ public class PersonServiceTest {
         verify(repository, times(NUMBER_ONE)).delete(person);
     }
 
-    private AddressResponse address(Integer number) {
+    private String address(Integer number) {
         AddressResponse addres = new AddressResponse();
         addres.setCity("City Test" + number);
-        addres.setState("State Test" + number);
-        return addres;
+        addres.setState("ST" + number);
+        return addres.toString();
     }
 }

@@ -76,7 +76,7 @@ class PersonControllerTest {
         response.andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", is(person.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(person.getLastName())))
-                .andExpect(jsonPath("$.gender", is(person.getGender().toString())))
+                .andExpect(jsonPath("$.gender", is(person.getGender().getValue())))
                 .andExpect(jsonPath("$.address.city", is(person.getAddress().getCity())))
                 .andExpect(jsonPath("$.address.state", is(person.getAddress().getState())));
     }
@@ -92,7 +92,7 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.personId", is(person.getPersonId().intValue())))
                 .andExpect(jsonPath("$.firstName", is(person.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(person.getLastName())))
-                .andExpect(jsonPath("$.gender", is(person.getGender().toString())))
+                .andExpect(jsonPath("$.gender", is(person.getGender().getValue())))
                 .andExpect(jsonPath("$.address.city", is(person.getAddress().getCity())))
                 .andExpect(jsonPath("$.address.state", is(person.getAddress().getState())));
     }
@@ -121,7 +121,7 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.[0].personId", is(list.get(0).getPersonId().intValue())))
                 .andExpect(jsonPath("$.[0].firstName", is(list.get(0).getFirstName())))
                 .andExpect(jsonPath("$.[0].lastName", is(list.get(0).getLastName())))
-                .andExpect(jsonPath("$.[0].gender", is(list.get(0).getGender().toString())))
+                .andExpect(jsonPath("$.[0].gender", is(list.get(0).getGender().getValue())))
                 .andExpect(jsonPath("$.[0].address.city", is(list.get(0).getAddress().getCity())))
                 .andExpect(jsonPath("$.[0].address.state", is(list.get(0).getAddress().getState())));
     }
@@ -143,7 +143,7 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.personId", is(person.getPersonId().intValue())))
                 .andExpect(jsonPath("$.firstName", is(person.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(person.getLastName())))
-                .andExpect(jsonPath("$.gender", is(person.getGender().toString())))
+                .andExpect(jsonPath("$.gender", is(person.getGender().getValue())))
                 .andExpect(jsonPath("$.address.city", is(person.getAddress().getCity())))
                 .andExpect(jsonPath("$.address.state", is(person.getAddress().getState())));
     }

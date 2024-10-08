@@ -55,7 +55,7 @@ public class BookService {
             repository.delete(book);
             log.info("Book with name: {} successfully deleted", book.getTitle());
         } catch (DataIntegrityViolationException e) {
-            log.error("Failed to delete book with name: {} due to referential integrity violation", book.getTitle(), e);
+            log.error("Failed to delete book with name: {} due to referential integrity violation", book.getTitle(), e.getMessage());
             throw new DataBaseException(e.getMessage());
         }
     }
