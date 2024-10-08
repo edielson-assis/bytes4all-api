@@ -6,10 +6,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
+import br.com.edielsonassis.bookstore.security.exceptions.InvalidJwtAuthenticationException;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;
@@ -43,6 +49,41 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> badRequest(HttpMessageNotReadableException exception, HttpServletRequest request) {
         String error = "Invalid request";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ExceptionResponse> jwtError(SecurityException exception, HttpServletRequest request) {
+        String error = "Access denied";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> InvalidJwt(InvalidJwtAuthenticationException exception, HttpServletRequest request) {
+        String error = "Access denied";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionResponse> badCredentialsError(BadCredentialsException exception, HttpServletRequest request) {
+        String error = "Invalid credentials";
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse> accessDeniedError(AccessDeniedException exception, HttpServletRequest request) {
+        String error = "Access denied";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> authenticationError(AuthenticationException exception, HttpServletRequest request) {
+        String error = "Authentication failure";
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(errors(status, error, exception, request));
     }
 
