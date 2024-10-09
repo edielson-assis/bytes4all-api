@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
-import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,12 +18,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        try {
-            log.info("Verifying the user's email: {}", email);
-            return repository.findByEmail(email);   
-        } catch (UsernameNotFoundException e) {
-            log.error("User not found.", e.getMessage());
-            throw new ObjectNotFoundException("User not found");
-        }    
+        log.info("Verifying the user's email: {}", email);
+        return repository.findByEmail(email).orElseThrow(() -> {
+            log.error("Username not found: {}", email);
+            return new UsernameNotFoundException("Username not found");
+        });    
     }
 }
