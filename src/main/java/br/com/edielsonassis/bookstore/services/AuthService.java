@@ -4,13 +4,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.edielsonassis.bookstore.dtos.v1.request.UserRequest;
-import br.com.edielsonassis.bookstore.dtos.v1.response.TokenJWT;
+import br.com.edielsonassis.bookstore.dtos.v1.request.UserSigninRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.request.UserSignupRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.response.TokenAndRefreshTokenResponse;
+import br.com.edielsonassis.bookstore.dtos.v1.response.TokenResponse;
+import br.com.edielsonassis.bookstore.dtos.v1.response.UserResponse;
+import br.com.edielsonassis.bookstore.mapper.Mapper;
 import br.com.edielsonassis.bookstore.model.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
 import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
+import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,21 +28,39 @@ public class AuthService {
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider tokenProvider;
 	private final UserRepository repository;
+	private final PasswordEncoder encoder;
+	private final PermissionService permissionService;
+
+	private static final String USER_PERMISSION = "COMMON_USER";
+
+	public UserResponse signup(UserSignupRequest userRequest) {
+		User user = Mapper.parseObject(userRequest, User.class);
+        validateEmailNotExists(user);
+        encryptPassword(user);
+		getPermission(user);
+        log.info("Registering a new User");
+        return Mapper.parseObject(repository.save(user), UserResponse.class);
+    }
 	
-	public TokenJWT signin(UserRequest data) {
+	public TokenAndRefreshTokenResponse signin(UserSigninRequest data) {
+		String username = data.getEmail();
+        log.info("Attempting to authenticate user: {}", username);
 		try {
-			var username = data.email();
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.password()));
+			log.debug("Authenticating user with email: {}", username);
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
+			log.debug("Authentication successful for user: {}", username);
 			var user = findUserByEmail(username);
-			return tokenProvider.createAccessToken(user.getUsername(), user.getRoles());
+			log.info("Generating access and refresh token for user: {}", username);
+			return tokenProvider.createAccessTokenRefreshToken(user.getUsername(), user.getRoles());
 		} catch (Exception e) {
+			log.error("Invalid username or password for user: {}", username);
 			throw new BadCredentialsException("Invalid username or password");
 		}
 	}
 	
-	public TokenJWT refreshToken(String username, String refreshToken) {
-		findUserByEmail(username);
-		return tokenProvider.refreshToken(refreshToken);
+	public TokenResponse refreshToken(String username, String refreshToken) {
+        findUserByEmail(username);
+        return tokenProvider.refreshToken(refreshToken, username);
 	}
 
 	private User findUserByEmail(String email) {
@@ -46,4 +70,21 @@ public class AuthService {
             return new UsernameNotFoundException("Username not found: " + email);
         });    
     }
+
+	private synchronized void validateEmailNotExists(User user) {
+        boolean exists = repository.existsByEmail(user.getEmail().toLowerCase());
+        if (exists) {
+            log.error("Email already exists: {}", user.getEmail());
+            throw new ValidationException("Email already exists");
+        }
+    }
+
+    private void encryptPassword(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+    }
+
+	private void getPermission(User user) {
+		var permission = permissionService.findbyPermission(USER_PERMISSION);
+		user.getPermissions().add(permission);
+	}
 }

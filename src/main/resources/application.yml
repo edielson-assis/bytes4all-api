@@ -8,8 +8,8 @@ security:
   jwt:
     token:
       secret-key: ${SECRET_KEY}
-      expire-length: ${EXPIRATION_TOKEN}
-      refresh-expire-length: ${EXPIRATION_REFRESH_TOKEN}
+      expiration-length: ${EXPIRATION_TOKEN}
+      refresh-expiration-length: ${EXPIRATION_REFRESH_TOKEN}
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
