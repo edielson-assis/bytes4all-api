@@ -3,7 +3,6 @@ package br.com.edielsonassis.bookstore.services;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +43,9 @@ public class AuthService {
 	
 	public TokenAndRefreshTokenResponse signin(UserSigninRequest data) {
 		String username = data.getEmail();
-        log.info("Attempting to authenticate user: {}", username);
 		try {
 			log.debug("Authenticating user with email: {}", username);
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-			log.debug("Authentication successful for user: {}", username);
-			var user = findUserByEmail(username);
+			var user = (User) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));	
 			log.info("Generating access and refresh token for user: {}", username);
 			return tokenProvider.createAccessTokenRefreshToken(user.getUsername(), user.getRoles());
 		} catch (Exception e) {
@@ -59,17 +55,8 @@ public class AuthService {
 	}
 	
 	public TokenResponse refreshToken(String username, String refreshToken) {
-        findUserByEmail(username);
         return tokenProvider.refreshToken(refreshToken, username);
 	}
-
-	private User findUserByEmail(String email) {
-        log.info("Verifying the user's email: {}", email);
-        return repository.findByEmail(email).orElseThrow(() -> {
-            log.error("Username not found: {}", email);
-            return new UsernameNotFoundException("Username not found: " + email);
-        });    
-    }
 
 	private synchronized void validateEmailNotExists(User user) {
         boolean exists = repository.existsByEmail(user.getEmail().toLowerCase());

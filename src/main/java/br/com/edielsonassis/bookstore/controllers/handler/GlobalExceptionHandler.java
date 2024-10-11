@@ -14,7 +14,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.edielsonassis.bookstore.security.exceptions.InvalidJwtAuthenticationException;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
@@ -53,8 +54,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(errors(status, error, exception, request));
     }
 
-    @ExceptionHandler(JWTVerificationException.class)
-    public ResponseEntity<ExceptionResponse> jwtError(SecurityException exception, HttpServletRequest request) {
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ExceptionResponse> jwtError(TokenExpiredException exception, HttpServletRequest request) {
+        String error = "Access denied";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(JWTDecodeException.class)
+    public ResponseEntity<ExceptionResponse> jwtError(JWTDecodeException exception, HttpServletRequest request) {
         String error = "Access denied";
         HttpStatus status = HttpStatus.FORBIDDEN;
         return ResponseEntity.status(status).body(errors(status, error, exception, request));

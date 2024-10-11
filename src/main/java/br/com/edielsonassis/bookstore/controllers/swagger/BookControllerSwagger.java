@@ -13,12 +13,16 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Books", description = "Endpoints for Managing Books")
 public interface BookControllerSwagger {
+
+	static final String SECURITY_SCHEME_KEY = "bearer-key";
     
     @Operation(
+		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
         summary = "Adds a new Book",
 		description = "Adds a new Book by passing in a JSON, XML or YML representation of the book!",
 		tags = {"Books"},
@@ -59,6 +63,7 @@ public interface BookControllerSwagger {
     ResponseEntity<List<BookResponse>> findAllBooks();
 
     @Operation(
+		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
         summary = "Updates a Book",
 		description = "Updates a Book by passing in a JSON, XML or YML representation of the book!",
 		tags = {"Books"},
@@ -74,6 +79,7 @@ public interface BookControllerSwagger {
     ResponseEntity<BookResponse> updateBook(BookUpdateRequest bookRequest);
 
     @Operation(
+		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
         summary = "Deletes a Book",
 		description = "Deletes a Book by their Id",
 		tags = {"Books"},

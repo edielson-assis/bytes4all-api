@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Authentication", description = "Endpoints for Managing User")
 public interface AuthControllerSwagger {
+
+	static final String SECURITY_SCHEME_KEY = "bearer-key";
     
     @Operation(
         summary = "Adds a new User",
@@ -44,6 +47,7 @@ public interface AuthControllerSwagger {
     ResponseEntity<TokenAndRefreshTokenResponse> signin(UserSigninRequest userRequest);
 
     @Operation(
+		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
         summary = "Updates a Token",
 		description = "Refresh token for authenticated user and returns a token",
 		tags = {"Authentication"},

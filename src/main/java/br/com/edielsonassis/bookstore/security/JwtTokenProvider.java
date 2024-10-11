@@ -33,6 +33,7 @@ public class JwtTokenProvider {
 
     private static final String CLAIM_ROLES = "roles";
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final String ZONE_ID = "-03:00";
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
@@ -71,7 +72,7 @@ public class JwtTokenProvider {
         refreshToken = stripBearerPrefix(refreshToken);
         DecodedJWT decodedJWT = verifyToken(refreshToken);
         String user = decodedJWT.getSubject();
-		verifyingUsername(username, decodedJWT);
+		verifyUsername(username, decodedJWT);
         List<String> roles = decodedJWT.getClaim(CLAIM_ROLES).asList(String.class);
 		log.debug("Token refreshed for user: {}", user);
         return createAccessToken(user, roles);
@@ -135,12 +136,12 @@ public class JwtTokenProvider {
 
     private Instant calculateExpirationToken() {
 		log.info("Calculating expiration time for access token");
-        return LocalDateTime.now().plusHours(expirationToken).toInstant(ZoneOffset.UTC);
+        return LocalDateTime.now().plusHours(expirationToken).toInstant(ZoneOffset.of(ZONE_ID));
     }
 
     private Instant calculateExpirationRefreshToken() {
 		log.info("Calculating expiration time for refresh token");
-        return LocalDateTime.now().plusDays(refreshExpirationToken).toInstant(ZoneOffset.UTC);
+        return LocalDateTime.now().plusDays(refreshExpirationToken).toInstant(ZoneOffset.of(ZONE_ID));
     }
 
     private DecodedJWT verifyToken(String token) {
@@ -156,11 +157,11 @@ public class JwtTokenProvider {
         return token;
     }
 
-	private void verifyingUsername(String username, DecodedJWT decodedJWT) {
+	private void verifyUsername(String username, DecodedJWT decodedJWT) {
 		String tokenUsername = decodedJWT.getSubject();
 		if (!username.equals(tokenUsername)) {
-			log.error("Error during refresh token generation.");
-			throw new InvalidJwtAuthenticationException("Failed to refresh the token.");
+			log.error("Error during refresh token generation for user: " + username);
+			throw new InvalidJwtAuthenticationException("Failed to refresh the token for user: " + username);
 		}
 	}
 }
