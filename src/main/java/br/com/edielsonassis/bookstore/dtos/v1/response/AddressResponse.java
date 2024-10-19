@@ -13,9 +13,9 @@ import lombok.Setter;
 @Schema(description = "Represents an address")
 public class AddressResponse implements Serializable {
 
-    @Schema(description = "City where the person lives", example = "New York", maxLength = 100, required = true)
+    @Schema(description = "City where the person lives", example = "New York")
     private String city;
 
-    @Schema(description = "State where the person lives (2-letter abbreviation)", example = "NY", maxLength = 2, required = true)
+    @Schema(description = "State where the person lives (2-letter abbreviation)", example = "NY")
     private String state;
 }

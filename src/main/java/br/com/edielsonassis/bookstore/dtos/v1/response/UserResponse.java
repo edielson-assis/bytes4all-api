@@ -8,15 +8,15 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(name = "Represents a User")
+@Schema(description = "Represents a User")
 public class UserResponse implements Serializable {
 
-    @Schema(description = "Unique identifier of the user", example = "1", required = true)
+    @Schema(description = "Unique identifier of the user", example = "1")
     private Long userId;
 
-    @Schema(description = "Full name of the person", example = "Robert Martin", maxLength = 150, required = true)
+    @Schema(description = "Full name of the person", example = "Robert Martin")
     private String fullName;
 
-    @Schema(description = "Email of the user.", example = "robert@example.com", maxLength = 100, required = true)
+    @Schema(description = "Email of the user.", example = "robert@example.com")
     private String email;
 }

@@ -14,16 +14,16 @@ import lombok.Setter;
 @Schema(description = "Represents a person")
 public class PersonResponse extends RepresentationModel<PersonResponse> implements Serializable {
     
-    @Schema(description = "Unique identifier of the person", example = "1", required = true)
+    @Schema(description = "Unique identifier of the person", example = "1")
     private Long personId;
 
-    @Schema(description = "First name of the person", example = "John", maxLength = 50, required = true)
+    @Schema(description = "First name of the person", example = "John")
     private String firstName;
 
-    @Schema(description = "Last name of the person", example = "Smith", maxLength = 100, required = true)
+    @Schema(description = "Last name of the person", example = "Smith")
     private String lastName;
 
-    @Schema(description = "Gender of the person", example = "MALE", required = true)
+    @Schema(description = "Gender of the person", example = "MALE")
     private Gender gender;
 
     @Schema(description = "Address information of the person")

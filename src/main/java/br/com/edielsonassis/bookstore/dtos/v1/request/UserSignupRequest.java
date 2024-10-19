@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(name = "Represents the User's Signup")
+@Schema(description = "Represents the User's Signup")
 public class UserSignupRequest implements Serializable {
 
     @Schema(description = "Full name of the person", example = "Robert Martin", maxLength = 150, required = true)

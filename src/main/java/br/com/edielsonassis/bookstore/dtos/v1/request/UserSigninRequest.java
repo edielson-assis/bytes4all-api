@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(name = "Represents the User's Signin")
+@Schema(description = "Represents the User's Signin")
 public class UserSigninRequest implements Serializable {
 
     @Schema(description = "Email of the user.", example = "robert@example.com", maxLength = 100, required = true)
