@@ -16,28 +16,33 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.edielsonassis.bookstore.BookstoreApplication;
 import br.com.edielsonassis.bookstore.controllers.PersonController;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
+import br.com.edielsonassis.bookstore.security.SecurityConfig;
 import br.com.edielsonassis.bookstore.services.PersonService;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 
-@Order(4)
+@ContextConfiguration(classes = {BookstoreApplication.class, SecurityConfig.class, JwtTokenProvider.class})
 @WebMvcTest(PersonController.class)
 class PersonControllerTest {
 
@@ -50,10 +55,13 @@ class PersonControllerTest {
     @MockBean
     private PersonService service;
 
+    @MockBean
+    private UserDetailsService usuarioDetailsService;
+
     private PersonResponse person;
 
     private static final Long PERSON_ID = 1L;
-    private static final String PATH = "/api/v1/person";
+    private static final String PATH = "/api/v1/people";
 
     @BeforeEach
     void setup() {
@@ -66,6 +74,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When create person then return PersonResponse")
     void testWhenCreatePersonThenReturnPersonResponse() throws JsonProcessingException, Exception {
         given(service.createPerson(any(PersonRequest.class))).willReturn(person);
@@ -82,6 +91,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find person by ID then return PersonResponse")
     void testWhenFindPersonByIdThenReturnPersonResponse() throws JsonProcessingException, Exception {
         given(service.findPersonById(PERSON_ID)).willReturn(person);
@@ -98,6 +108,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find person by ID then throw ObjectNotFoundException")
     void testWhenFindPersonByIdThenThrowObjectNotFoundException() throws JsonProcessingException, Exception {
         given(service.findPersonById(PERSON_ID)).willThrow(ObjectNotFoundException.class);
@@ -108,6 +119,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find all people then return PersonResponse list")
     void testWhenFindAllPeopleThenReturnPersonResponseList() throws JsonProcessingException, Exception {
         List<PersonResponse> list = List.of(person);
@@ -127,6 +139,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When update person then return PersonResponse")
     void testWhenUpdatePersonThenReturnPersonResponse() throws JsonProcessingException, Exception {
         person.setFirstName("New First Name Test");
@@ -149,6 +162,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When delete person then return no content")
     void testWhenDeletePersonThenReturnNoContent() throws JsonProcessingException, Exception {
         willDoNothing().given(service).deletePerson(PERSON_ID);

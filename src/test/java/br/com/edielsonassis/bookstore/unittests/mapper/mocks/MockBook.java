@@ -57,19 +57,21 @@ public class MockBook {
     }
 
     public BookRequest mockDto(Integer number) {
-        return BookRequest.builder()
-                .author("Author Test" + number)
-                .launchDate(LocalDate.now())
-                .title("Title Test" + number)
-                .description("Description Test" + number).build();
+        BookRequest book = new BookRequest();
+        book.setAuthor("Author Test" + number);
+        book.setLaunchDate(LocalDate.now());
+        book.setTitle("Title Test" + number);
+        book.setDescription("Description Test" + number);
+        return book;
     }
 
     public BookUpdateRequest mockUpdateDto(Integer number) {
-        return BookUpdateRequest.builder()
-                .bookId(number.longValue())
-                .author("Author Test" + number)
-                .launchDate(LocalDate.now())
-                .title("Title Test" + number)
-                .description("Description Test" + number).build();
+        BookUpdateRequest book = new BookUpdateRequest();
+        book.setBookId(number.longValue());
+        book.setAuthor("Author Test" + number);
+        book.setLaunchDate(LocalDate.now());
+        book.setTitle("Title Test" + number);
+        book.setDescription("Description Test" + number);
+        return book;
     }
 }

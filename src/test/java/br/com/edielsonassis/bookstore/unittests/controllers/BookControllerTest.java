@@ -17,26 +17,31 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.edielsonassis.bookstore.BookstoreApplication;
 import br.com.edielsonassis.bookstore.controllers.BookController;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
+import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
+import br.com.edielsonassis.bookstore.security.SecurityConfig;
 import br.com.edielsonassis.bookstore.services.BookService;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 
-@Order(5)
+@ContextConfiguration(classes = {BookstoreApplication.class, SecurityConfig.class, JwtTokenProvider.class})
 @WebMvcTest(BookController.class)
 class BookControllerTest {
 
@@ -49,10 +54,13 @@ class BookControllerTest {
     @MockBean
     private BookService service;
 
+    @MockBean
+    private UserDetailsService usuarioDetailsService;
+
     private BookResponse book;
 
     private static final Long PERSON_ID = 1L;
-    private static final String PATH = "/api/v1/book";
+    private static final String PATH = "/api/v1/books";
 
     @BeforeEach
     void setup() {
@@ -65,7 +73,8 @@ class BookControllerTest {
     }
 
     @Test
-    @DisplayName("When create book then return BookResponse")
+    @WithMockUser
+    @DisplayName("When create a book then return BookResponse")
     void testWhenCreateBookThenReturnBookResponse() throws JsonProcessingException, Exception {
         given(service.createBook(any(BookRequest.class))).willReturn(book);
 
@@ -80,6 +89,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find book by ID then return BookResponse")
     void testWhenFindBookByIdThenReturnBookResponse() throws JsonProcessingException, Exception {
         given(service.findBookById(PERSON_ID)).willReturn(book);
@@ -95,6 +105,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find book by ID then throw ObjectNotFoundException")
     void testWhenFindBookByIdThenThrowObjectNotFoundException() throws JsonProcessingException, Exception {
         given(service.findBookById(PERSON_ID)).willThrow(ObjectNotFoundException.class);
@@ -105,6 +116,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When find all books then return BookResponse list")
     void testWhenFindAllBooksThenReturnBookResponseList() throws JsonProcessingException, Exception {
         List<BookResponse> list = List.of(book);
@@ -123,7 +135,8 @@ class BookControllerTest {
     }
 
     @Test
-    @DisplayName("When update book then return BookResponse")
+    @WithMockUser
+    @DisplayName("When update a book then return BookResponse")
     void testWhenUpdateBookThenReturnBookResponse() throws JsonProcessingException, Exception {
         book.setAuthor("New author Test");
         book.setLaunchDate(LocalDate.parse("2014-08-02"));
@@ -144,6 +157,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("When delete book then return no content")
     void testWhenDeleteBookThenReturnNoContent() throws JsonProcessingException, Exception {
         willDoNothing().given(service).deleteBook(PERSON_ID);

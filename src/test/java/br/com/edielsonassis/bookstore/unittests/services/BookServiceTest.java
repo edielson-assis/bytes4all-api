@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -35,10 +34,9 @@ import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockBook;
 
-@Order(3)
 @TestInstance(Lifecycle.PER_METHOD)
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTest {
+class BookServiceTest {
 
     @Mock
     private BookRepository repository;
@@ -49,7 +47,7 @@ public class BookServiceTest {
     private Book book;
     private BookRequest bookRequest;
     private MockBook input;
-    private static final Long PERSON_ID = 1L;
+    private static final Long BOOK_ID = 1L;
     private static final Integer NUMBER_ONE = 1;
 
     @BeforeEach
@@ -60,7 +58,7 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("When create book then return BookResponse")
+    @DisplayName("When create a book then return BookResponse")
     void testWhenCreateBookThenReturnBookResponse() {
         when(repository.save(any(Book.class))).thenReturn(book);
 
@@ -83,7 +81,7 @@ public class BookServiceTest {
     void testWhenFindBookByIdThenReturnBookResponse() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(book));
 
-        var savedBook = service.findBookById(PERSON_ID);
+        var savedBook = service.findBookById(BOOK_ID);
 
         assertNotNull(savedBook);
         assertNotNull(savedBook.getBookId());
@@ -102,7 +100,7 @@ public class BookServiceTest {
     void testWhenFindBookByIdThenThrowObjectNotFoundException() {
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ObjectNotFoundException.class, () -> service.findBookById(PERSON_ID));
+        assertThrows(ObjectNotFoundException.class, () -> service.findBookById(BOOK_ID));
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
     }
@@ -134,7 +132,7 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("When update book then return BookResponse")
+    @DisplayName("When update a book then return BookResponse")
     void testWhenUpdateBookThenReturnBookResponse() {
         Book updatedBook = input.mockEntity(NUMBER_ONE);
         BookUpdateRequest bookRequest = input.mockUpdateDto(NUMBER_ONE);
@@ -163,7 +161,7 @@ public class BookServiceTest {
         when(repository.findById(anyLong())).thenReturn(Optional.of(book));
         doNothing().when(repository).delete(book);
 
-        service.deleteBook(PERSON_ID);
+        service.deleteBook(BOOK_ID);
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
         verify(repository, times(NUMBER_ONE)).delete(book);
@@ -175,7 +173,7 @@ public class BookServiceTest {
         when(repository.findById(anyLong())).thenReturn(Optional.of(book));
         doThrow(new DataIntegrityViolationException("Referential integrity violation")).when(repository).delete(book);
         
-        assertThrows(DataBaseException.class, () -> service.deleteBook(PERSON_ID));
+        assertThrows(DataBaseException.class, () -> service.deleteBook(BOOK_ID));
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
         verify(repository, times(NUMBER_ONE)).delete(book);

@@ -50,41 +50,44 @@ public class MockPerson {
     
     public Person mockEntity(Integer number) {
         Person person = new Person();
-        person.setAddress(mockAddress(number));
-        person.setFirstName("First Name Test" + number);
-        person.setGender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE);
         person.setPersonId(number.longValue());
+        person.setFirstName("First Name Test" + number);
         person.setLastName("Last Name Test" + number);
+        person.setGender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE);
+        person.setAddress(mockAddress(number));
         return person;
     }
 
     public PersonRequest mockDto(Integer number) {
-        return PersonRequest.builder()
-                .firstName("First Name Test" + number)
-                .lastName("Last Name Test" + number)
-                .gender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE)
-                .address(mockAddressDto(number)).build();
+        PersonRequest person = new PersonRequest();
+        person.setFirstName("First Name Test" + number);
+        person.setLastName("Last Name Test" + number);
+        person.setGender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE);
+        person.setAddress(mockAddressDto(number));
+        return person;
     }
 
     public PersonUpdateRequest mockUpdateDto(Integer number) {
-        return PersonUpdateRequest.builder()
-                .personId(number.longValue())
-                .firstName("First Name Test" + number)
-                .lastName("Last Name Test" + number)
-                .gender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE)
-                .address(mockAddressDto(number)).build();
+        PersonUpdateRequest person = new PersonUpdateRequest();
+        person.setPersonId(number.longValue());
+        person.setFirstName("First Name Test" + number);
+        person.setLastName("Last Name Test" + number);
+        person.setGender(((number % 2)==0) ? Gender.MALE : Gender.FEMALE);
+        person.setAddress(mockAddressDto(number));
+        return person;
     }
 
     private AddressRequest mockAddressDto(Integer number) {
-        return AddressRequest.builder()
-                .city("City Test" + number)
-                .state("ST" + number).build();
+        AddressRequest address = new AddressRequest();
+        address.setCity("City Test" + number);
+        address.setState("ST" + number);
+        return address;
     }
 
     private Address mockAddress(Integer number) {
-        Address addres = new Address();
-        addres.setCity("City Test" + number);
-        addres.setState("ST" + number);
-        return addres;
+        Address address = new Address();
+        address.setCity("City Test" + number);
+        address.setState("ST" + number);
+        return address;
     }
 }

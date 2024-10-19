@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
@@ -15,19 +14,19 @@ import br.com.edielsonassis.bookstore.model.Address;
 import br.com.edielsonassis.bookstore.model.Person;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
 
-@Order(1)
-public class ModelConverterTest {
+class ModelConverterTest {
     
     MockPerson inputObject;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         inputObject = new MockPerson();
     }
 
     @Test
-    public void parseEntityToDtoTest() {
+    void parseEntityToDtoTest() {
         PersonResponse output = Mapper.parseObject(inputObject.mockEntity(), PersonResponse.class);
+        
         assertEquals(Long.valueOf(0L), output.getPersonId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
@@ -36,7 +35,7 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parseEntityListToDtoListTest() {
+    void parseEntityListToDtoListTest() {
         List<PersonResponse> outputList = Mapper.parseListObjects(inputObject.mockEntityList(), PersonResponse.class);
         PersonResponse outputZero = outputList.get(0);
         
@@ -64,8 +63,9 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parseDtoToEntityTest() {
+    void parseDtoToEntityTest() {
         Person output = Mapper.parseObject(inputObject.mockDto(), Person.class);
+        
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
         assertEquals(address(0), output.getAddress());
@@ -73,7 +73,7 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parseDtoListToEntityListTest() {
+    void parseDtoListToEntityListTest() {
         List<Person> outputList = Mapper.parseListObjects(inputObject.mockDtoList(), Person.class);
         Person outputZero = outputList.get(0);
         
@@ -98,8 +98,9 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parseUpdateDtoToEntityTest() {
+    void parseUpdateDtoToEntityTest() {
         Person output = Mapper.parseObject(inputObject.mockUpdateDto(), Person.class);
+        
         assertEquals(Long.valueOf(0L), output.getPersonId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
@@ -108,7 +109,7 @@ public class ModelConverterTest {
     }
 
     @Test
-    public void parseUpdateDtoListToEntityListTest() {
+    void parseUpdateDtoListToEntityListTest() {
         List<Person> outputList = Mapper.parseListObjects(inputObject.mockUpdateDtoList(), Person.class);
         Person outputZero = outputList.get(0);
         
