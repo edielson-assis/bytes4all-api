@@ -3,6 +3,7 @@ package br.com.edielsonassis.bookstore.services;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,9 @@ public class AuthService {
 		String username = data.getEmail();
 		try {
 			log.debug("Authenticating user with email: {}", username);
-			var user = (User) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));	
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
+			log.debug("Authentication successful for user: {}", username);
+			var user = findUserByEmail(username);
 			log.info("Generating access and refresh token for user: {}", username);
 			return tokenProvider.createAccessTokenRefreshToken(user.getUsername(), user.getRoles());
 		} catch (Exception e) {
@@ -58,7 +61,16 @@ public class AuthService {
         return tokenProvider.refreshToken(refreshToken, username);
 	}
 
+	private User findUserByEmail(String email) {
+        log.info("Verifying the user's email: {}", email);
+        return repository.findByEmail(email).orElseThrow(() -> {
+            log.error("Username not found: {}", email);
+            return new UsernameNotFoundException("Username not found: " + email);
+        });    
+    }
+
 	private synchronized void validateEmailNotExists(User user) {
+		log.info("Verifying the user's email: {}", user.getEmail());
         boolean exists = repository.existsByEmail(user.getEmail().toLowerCase());
         if (exists) {
             log.error("Email already exists: {}", user.getEmail());
@@ -67,6 +79,7 @@ public class AuthService {
     }
 
     private void encryptPassword(User user) {
+		log.info("Encrypting password");
         user.setPassword(encoder.encode(user.getPassword()));
     }
 

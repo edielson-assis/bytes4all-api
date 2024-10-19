@@ -25,7 +25,7 @@ public class SpringDocConfig {
 				.info(new Info()
 					.title("Bytes4All")
 					.version("v1.0.0")
-					.description("RestFul API of the Bytes4All application. The API allows users to upload and download files")
+					.description("RestFul API of the Bytes4All application. The API allows users to upload and download e-books")
 					.termsOfService("https://edielsonassis.com.br/termos-a-serem-definidos")
 					.license(new License()
 							.name("Apache 2.0")

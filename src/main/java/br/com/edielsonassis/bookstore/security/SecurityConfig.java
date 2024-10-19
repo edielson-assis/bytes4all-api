@@ -2,6 +2,7 @@ package br.com.edielsonassis.bookstore.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,7 +25,8 @@ public class SecurityConfig {
 
 	private JwtTokenProvider tokenProvider;
 
-    private static final String PUBLIC_METHOD = "/api/v1/auth/**";
+    private static final String PUBLIC_POST_METHOD = "/api/v1/auth/**";
+    private static final String[] PUBLIC_GET_METHODS = {"/api/v1/books/**"};
     private static final String[] SWAGGER = {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
 
     @Bean
@@ -37,7 +39,8 @@ public class SecurityConfig {
                 .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                            .requestMatchers(PUBLIC_METHOD).permitAll()
+                            .requestMatchers(HttpMethod.POST, PUBLIC_POST_METHOD).permitAll()
+                            .requestMatchers(HttpMethod.GET, PUBLIC_GET_METHODS).permitAll()
                             .requestMatchers(SWAGGER).permitAll()
                             .requestMatchers("/api/**").authenticated()
                             .requestMatchers("/users").denyAll()).build();
