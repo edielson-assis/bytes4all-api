@@ -41,14 +41,17 @@ public class AuthController implements AuthControllerSwagger {
     }
 	
     @Transactional
-	@PostMapping(path = "/signin", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
+	@PostMapping(path = "/signin",
+		consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
+		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
+	)	
 	@Override
     public ResponseEntity<TokenAndRefreshTokenResponse> signin(@Valid @RequestBody UserSigninRequest userRequest) {
 		var token = authService.signin(userRequest);
 		return ResponseEntity.ok(token);
 	}
 	
-	@GetMapping(path = "/refresh/{username}")
+	@GetMapping(path = "/refresh/{username}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
     @Override
 	public ResponseEntity<TokenResponse> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
         var token = authService.refreshToken(username, refreshToken);

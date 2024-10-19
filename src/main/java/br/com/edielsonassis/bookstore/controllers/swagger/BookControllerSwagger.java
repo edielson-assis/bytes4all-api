@@ -9,7 +9,6 @@ import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,7 +54,7 @@ public interface BookControllerSwagger {
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
-				content = @Content(array = @ArraySchema(schema = @Schema(implementation = BookResponse.class)))),
+				content = @Content(schema = @Schema(implementation = BookResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}

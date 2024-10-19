@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/person")
+@RequestMapping(value = "/api/v1/people")
 public class PersonController implements PersonControllerSwagger {
 	
 	private final PersonService service;

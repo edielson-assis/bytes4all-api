@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/book")
+@RequestMapping(value = "/api/v1/books")
 public class BookController implements BookControllerSwagger {
 	
 	private final BookService service;
@@ -63,7 +63,7 @@ public class BookController implements BookControllerSwagger {
 	}
 
 	@Transactional
-	@PutMapping(path = "update",
+	@PutMapping(path = "/update",
 		consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}, 
 		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
 	)

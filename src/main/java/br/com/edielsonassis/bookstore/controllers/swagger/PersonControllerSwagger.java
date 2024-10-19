@@ -9,7 +9,6 @@ import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,7 +52,7 @@ public interface PersonControllerSwagger {
 		tags = {"People"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
-				content = @Content(array = @ArraySchema(schema = @Schema(implementation = PersonResponse.class)))),
+				content = @Content(schema = @Schema(implementation = PersonResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
