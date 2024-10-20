@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.edielsonassis.bookstore.security.exceptions.InvalidJwtAuthenticationException;
@@ -70,6 +71,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidJwtAuthenticationException.class)
     public ResponseEntity<ExceptionResponse> InvalidJwt(InvalidJwtAuthenticationException exception, HttpServletRequest request) {
+        String error = "Access denied";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(SignatureVerificationException.class)
+    public ResponseEntity<ExceptionResponse> InvalidJwt(SignatureVerificationException exception, HttpServletRequest request) {
         String error = "Access denied";
         HttpStatus status = HttpStatus.FORBIDDEN;
         return ResponseEntity.status(status).body(errors(status, error, exception, request));

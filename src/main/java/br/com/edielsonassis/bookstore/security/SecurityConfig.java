@@ -26,7 +26,7 @@ public class SecurityConfig {
 	private JwtTokenProvider tokenProvider;
 
     private static final String PUBLIC_POST_METHOD = "/api/v1/auth/**";
-    private static final String[] PUBLIC_GET_METHODS = {"/api/v1/books/**"};
+    private static final String[] PUBLIC_GET_METHODS = {"/api/v1/books/**", "/api/v1/auth/refresh/**"};
     private static final String[] SWAGGER = {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
 
     @Bean
