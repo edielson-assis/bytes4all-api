@@ -2,6 +2,7 @@ package br.com.edielsonassis.bookstore.unittests.mapper.mocks;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.UserSigninRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.UserSignupRequest;
+import br.com.edielsonassis.bookstore.dtos.v1.response.UserResponse;
 import br.com.edielsonassis.bookstore.model.User;
 
 public class MockUser {
@@ -29,6 +30,14 @@ public class MockUser {
         UserSigninRequest user = new UserSigninRequest();
         user.setEmail("teste@email.com");
         user.setPassword("1234567");
+        return user;
+    }
+
+    public UserResponse userResponse() {
+        UserResponse user = new UserResponse();
+        user.setUserId(USER_ID);
+        user.setFullName("Test auth");
+        user.setEmail("teste@email.com");
         return user;
     }
 }

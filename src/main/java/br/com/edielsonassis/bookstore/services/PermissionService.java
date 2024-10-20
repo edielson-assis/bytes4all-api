@@ -3,7 +3,7 @@ package br.com.edielsonassis.bookstore.services;
 import org.springframework.stereotype.Service;
 
 import br.com.edielsonassis.bookstore.model.Permission;
-import br.com.edielsonassis.bookstore.repositories.PermissonRepository;
+import br.com.edielsonassis.bookstore.repositories.PermissionRepository;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PermissionService {
     
-    private final PermissonRepository repository;
+    private final PermissionRepository repository;
 
     public Permission findbyPermission(String name) {
         log.info("Verifying for permission: {}", name);
