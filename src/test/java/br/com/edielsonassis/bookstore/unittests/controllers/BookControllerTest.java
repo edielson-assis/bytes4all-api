@@ -59,13 +59,13 @@ class BookControllerTest {
 
     private BookResponse book;
 
-    private static final Long PERSON_ID = 1L;
+    private static final Long BOOK_ID = 1L;
     private static final String PATH = "/api/v1/books";
 
     @BeforeEach
     void setup() {
         book = new BookResponse();
-        book.setBookId(PERSON_ID);
+        book.setBookId(BOOK_ID);
         book.setAuthor("Author Test");
         book.setLaunchDate(LocalDate.now());
         book.setTitle("Title Test");
@@ -92,9 +92,9 @@ class BookControllerTest {
     @WithMockUser
     @DisplayName("When find book by ID then return BookResponse")
     void testWhenFindBookByIdThenReturnBookResponse() throws JsonProcessingException, Exception {
-        given(service.findBookById(PERSON_ID)).willReturn(book);
+        given(service.findBookById(BOOK_ID)).willReturn(book);
 
-        ResultActions response = mockMvc.perform(get(PATH.concat("/get/{id}"), PERSON_ID));
+        ResultActions response = mockMvc.perform(get(PATH.concat("/get/{id}"), BOOK_ID));
 
         response.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.bookId", is(book.getBookId().intValue())))
@@ -108,9 +108,9 @@ class BookControllerTest {
     @WithMockUser
     @DisplayName("When find book by ID then throw ObjectNotFoundException")
     void testWhenFindBookByIdThenThrowObjectNotFoundException() throws JsonProcessingException, Exception {
-        given(service.findBookById(PERSON_ID)).willThrow(ObjectNotFoundException.class);
+        given(service.findBookById(BOOK_ID)).willThrow(ObjectNotFoundException.class);
 
-        ResultActions response = mockMvc.perform(get(PATH.concat("/get/{id}"), PERSON_ID));
+        ResultActions response = mockMvc.perform(get(PATH.concat("/get/{id}"), BOOK_ID));
 
         response.andExpect(status().isNotFound()).andDo(print());
     }
@@ -160,9 +160,9 @@ class BookControllerTest {
     @WithMockUser
     @DisplayName("When delete book then return no content")
     void testWhenDeleteBookThenReturnNoContent() throws JsonProcessingException, Exception {
-        willDoNothing().given(service).deleteBook(PERSON_ID);
+        willDoNothing().given(service).deleteBook(BOOK_ID);
 
-        ResultActions response = mockMvc.perform(delete(PATH.concat("/delete/{id}"), PERSON_ID));
+        ResultActions response = mockMvc.perform(delete(PATH.concat("/delete/{id}"), BOOK_ID));
 
         response.andExpect(status().isNoContent()).andDo(print());
     }

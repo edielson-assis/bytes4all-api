@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,8 +22,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.UserSigninRequest;
@@ -57,6 +62,12 @@ public class AuthServiceTest {
     @Mock
     private JwtTokenProvider tokenProvider;
 
+    @Mock
+    private SecurityContext securityContext;
+
+    @Mock
+    private Authentication authentication;
+
     @InjectMocks
     private AuthService service;
 
@@ -69,6 +80,8 @@ public class AuthServiceTest {
     private static final Integer NUMBER_ONE = 1;
     private static final String ACCESS_TOKEN = "accessToken";
     private static final String REFRESH_TOKEN = "refreshToken";
+    private static final String USER_EMAIL = "teste@email.com";
+    private static final String WRONG_USER_EMAIL = "teste@example.com";
 
     @BeforeEach
     void setup() {
@@ -144,5 +157,33 @@ public class AuthServiceTest {
 
         assertNotNull(response);
         assertEquals(ACCESS_TOKEN, response.accessToken());
+    }
+
+    @Test
+    @DisplayName("When delete user then return no content")
+    void testWhenDeleteUserThenReturnNoContent() {
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        doNothing().when(repository).disableUser(user.getEmail());
+
+        SecurityContextHolder.setContext(securityContext);
+
+        service.disableUser(USER_EMAIL);
+        
+        verify(repository, times(NUMBER_ONE)).disableUser(anyString());
+    }
+
+    @Test
+    @DisplayName("When delete user then throw AccessDeniedException")
+    void testWhenDeleteUserThenThrowAccessDeniedException() {
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
+
+        SecurityContextHolder.setContext(securityContext);
+        
+        assertThrows(AccessDeniedException.class, () -> service.disableUser(WRONG_USER_EMAIL));
+        
+        verify(repository, never()).disableUser(anyString());
     }
 }

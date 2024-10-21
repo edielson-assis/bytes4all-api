@@ -40,6 +40,7 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
     private static UserSignupRequest userSignup;
 	private static TokenAndRefreshTokenResponse token;
     private static final String BASE_PATH = "/api/v1/auth";
+    private static final String USERNAME = "teste@email.com";
 
     @BeforeAll
 	static void setup() {
@@ -113,7 +114,7 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
 	void testShouldRefreshAJWTToken() throws JsonMappingException, JsonProcessingException {
 		var newTokenResponse = given().spec(specification)
 				.basePath(BASE_PATH.concat("/refresh"))
-                .pathParam("username", "teste@email.com")
+                .pathParam("username", USERNAME)
                 .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getRefreshToken())
 				.when()
                 .get("{username}")
@@ -125,4 +126,18 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
 		
 		assertNotNull(newTokenResponse.getAccessToken());
 	}
+
+    @Test
+    @Order(3)
+    @DisplayName("When delete user then return no content")
+    void testWhenDeleteUserThenReturnNoContent() throws JsonMappingException, JsonProcessingException {
+        given().spec(specification)
+            .basePath(BASE_PATH.concat("/delete"))
+            .pathParam("email", USERNAME)
+            .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getRefreshToken())
+            .when()
+            .delete("{email}")
+            .then()
+            .statusCode(204);
+    }
 }
