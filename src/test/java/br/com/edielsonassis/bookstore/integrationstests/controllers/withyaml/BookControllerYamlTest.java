@@ -21,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import br.com.edielsonassis.bookstore.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
+import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.controllers.withyaml.mapper.YMLMapper;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookUpdateRequest;

@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.edielsonassis.bookstore.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
+import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.AddressRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.PersonRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.PersonUpdateRequest;

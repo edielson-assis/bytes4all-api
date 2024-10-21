@@ -24,8 +24,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import br.com.edielsonassis.bookstore.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
+import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.UserSigninRequest;

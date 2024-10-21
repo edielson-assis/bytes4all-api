@@ -7,8 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.com.edielsonassis.bookstore.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
+import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class SwaggerIntegrationTest extends AbstractIntegrationTest {
