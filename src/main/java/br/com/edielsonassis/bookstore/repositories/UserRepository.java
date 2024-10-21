@@ -3,6 +3,7 @@ package br.com.edielsonassis.bookstore.repositories;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,4 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(@Param("email") String email);
 
     boolean existsByEmail(String email);
+
+    @Modifying
+	@Query("UPDATE User u SET u.enabled = false WHERE u.email = :email")
+	void disableUser(@Param("email") String email);
 }

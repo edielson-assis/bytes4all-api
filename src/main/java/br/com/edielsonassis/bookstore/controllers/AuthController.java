@@ -2,6 +2,7 @@ package br.com.edielsonassis.bookstore.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,5 +57,13 @@ public class AuthController implements AuthControllerSwagger {
 	public ResponseEntity<TokenResponse> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
         var token = authService.refreshToken(username, refreshToken);
 		return ResponseEntity.ok(token);
+	}
+
+	@Transactional
+	@DeleteMapping(path = "/delete/{email}")
+	@Override
+	public ResponseEntity<Void> deleteUser(@PathVariable(value = "email") String email) {
+		authService.disableUser(email);
+		return ResponseEntity.noContent().build();
 	}
 }

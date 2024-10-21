@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Authentication", description = "Endpoints for Managing User")
 public interface AuthControllerSwagger {
+
+	static final String SECURITY_SCHEME_KEY = "bearer-key";
     
     @Operation(
         summary = "Adds a new User",
@@ -57,4 +60,18 @@ public interface AuthControllerSwagger {
 		}
 	)
     ResponseEntity<TokenResponse> refreshToken(String username, String refreshToken);
+
+	@Operation(
+		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
+        summary = "Deletes a User",
+		description = "Deletes a User by their Email",
+		tags = {"Authentication"},
+		responses = {
+			@ApiResponse(responseCode = "204", description = "Deleted user", content = @Content),
+			@ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found - User not found", content = @Content),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
+		}
+	)
+	ResponseEntity<Void> deleteUser(String email);
 }
