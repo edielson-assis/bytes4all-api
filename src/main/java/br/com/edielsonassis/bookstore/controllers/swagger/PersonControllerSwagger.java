@@ -1,7 +1,7 @@
 package br.com.edielsonassis.bookstore.controllers.swagger;
 
-import java.util.List;
-
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
@@ -48,6 +48,18 @@ public interface PersonControllerSwagger {
     ResponseEntity<PersonResponse> findPersonById(@Parameter(description = "The Id of the person to find.") Long id);
 
     @Operation(
+        summary = "Finds a Person", description = "Search for one or more people by name",
+		tags = {"People"},
+		responses = {
+			@ApiResponse(responseCode = "200", description = "Success", 
+				content = @Content(schema = @Schema(implementation = PersonResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
+		}
+	)
+    ResponseEntity<PagedModel<EntityModel<PersonResponse>>> findPersonByName(String name, Integer page, Integer size, String direction);
+
+    @Operation(
         summary = "Finds all People", description = "Finds all People",
 		tags = {"People"},
 		responses = {
@@ -57,9 +69,9 @@ public interface PersonControllerSwagger {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<List<PersonResponse>> findAllPeople();
-
-    @Operation(
+    ResponseEntity<PagedModel<EntityModel<PersonResponse>>> findAllPeople(Integer page, Integer size, String direction);
+	
+	@Operation(
         summary = "Updates a Person",
 		description = "Updates a Person by passing in a JSON, XML or YML representation of the person!",
 		tags = {"People"},

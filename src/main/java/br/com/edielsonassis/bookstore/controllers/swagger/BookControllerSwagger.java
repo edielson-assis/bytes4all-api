@@ -1,7 +1,7 @@
 package br.com.edielsonassis.bookstore.controllers.swagger;
 
-import java.util.List;
-
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
@@ -59,7 +59,19 @@ public interface BookControllerSwagger {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<List<BookResponse>> findAllBooks();
+    ResponseEntity<PagedModel<EntityModel<BookResponse>>> findAllBooks(Integer page, Integer size, String direction);
+
+	@Operation(
+        summary = "Finds a Book", description = "Search for one or more books by name",
+		tags = {"Books"},
+		responses = {
+			@ApiResponse(responseCode = "200", description = "Success", 
+				content = @Content(schema = @Schema(implementation = BookResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
+		}
+	)
+    ResponseEntity<PagedModel<EntityModel<BookResponse>>> findBookByName(String name, Integer page, Integer size, String direction);
 
     @Operation(
 		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},

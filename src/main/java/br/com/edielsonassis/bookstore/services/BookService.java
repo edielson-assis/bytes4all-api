@@ -1,8 +1,10 @@
 package br.com.edielsonassis.bookstore.services;
 
-import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
@@ -36,20 +38,29 @@ public class BookService {
         return Mapper.parseObject(book, BookResponse.class);
     }
 
-    public List<BookResponse> findAllBooks() {
+    public Page<BookResponse> findBookByName(String name, Integer page, Integer size, String direction) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+        log.info("Searching for book with title: {}", name);
+        return repository.findBookByName(name, pageable).map(book -> Mapper.parseObject(book, BookResponse.class));
+    }
+
+    public Page<BookResponse> findAllBooks(Integer page, Integer size, String direction) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
         log.info("Searching all books");
-        return Mapper.parseListObjects(repository.findAll(), BookResponse.class);
+        return repository.findAll(pageable).map(book -> Mapper.parseObject(book, BookResponse.class));
     }
 
     public BookResponse updateBook(BookUpdateRequest bookRequest) {
-        Book book = findById(bookRequest.getBookId());
+        var book = findById(bookRequest.getBookId());
         book = Mapper.parseObject(bookRequest, Book.class);
         log.info("Updating book with name: {}", book.getTitle());
         return Mapper.parseObject(repository.save(book), BookResponse.class);
     }
 
     public void deleteBook(Long id) {
-        Book book = findById(id);
+        var book = findById(id);
         try {
             log.info("Attempting to delete book with ID: {}", book.getBookId());
             repository.delete(book);

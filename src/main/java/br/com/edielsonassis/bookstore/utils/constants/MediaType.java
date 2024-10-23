@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.util;
+package br.com.edielsonassis.bookstore.utils.constants;
 
 public class MediaType {
     

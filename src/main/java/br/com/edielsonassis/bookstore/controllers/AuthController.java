@@ -18,7 +18,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.response.TokenAndRefreshTokenRespo
 import br.com.edielsonassis.bookstore.dtos.v1.response.TokenResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.UserResponse;
 import br.com.edielsonassis.bookstore.services.AuthService;
-import br.com.edielsonassis.bookstore.util.MediaType;
+import br.com.edielsonassis.bookstore.utils.constants.MediaType;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

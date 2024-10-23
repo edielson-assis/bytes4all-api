@@ -1,8 +1,10 @@
 package br.com.edielsonassis.bookstore.services;
 
-import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
@@ -36,20 +38,29 @@ public class PersonService {
         return Mapper.parseObject(person, PersonResponse.class);
     }
 
-    public List<PersonResponse> findAllPeople() {
+    public Page<PersonResponse> findPersonByName(String name, Integer page, Integer size, String direction) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+        log.info("Searching for person with name: {}", name);
+        return repository.findPersonByName(name, pageable).map(person -> Mapper.parseObject(person, PersonResponse.class));
+    }
+
+    public Page<PersonResponse> findAllPeople(Integer page, Integer size, String direction) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
         log.info("Searching all people");
-        return Mapper.parseListObjects(repository.findAll(), PersonResponse.class);
+        return repository.findAll(pageable).map(person -> Mapper.parseObject(person, PersonResponse.class));
     }
 
     public PersonResponse updatePerson(PersonUpdateRequest personRequest) {
-        Person person = findById(personRequest.getPersonId());
+        var person = findById(personRequest.getPersonId());
         person = Mapper.parseObject(personRequest, Person.class);
         log.info("Updating person with name: {}", person.getFirstName());
         return Mapper.parseObject(repository.save(person), PersonResponse.class);
     }
 
     public void deletePerson(Long id) {
-        Person person = findById(id);
+        var person = findById(id);
         try {
             log.info("Attempting to delete person with ID: {}", person.getPersonId());
             repository.delete(person);
