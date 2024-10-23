@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.model.Book;
@@ -22,13 +26,18 @@ public class MockBook {
         return mockUpdateDto(0);
     }
     
-    public List<Book> mockEntityList() {
+    public Page<Book> mockEntityList(int page, int size) {
         List<Book> books = new ArrayList<>();
+    
         for (int i = 0; i < 14; i++) {
             books.add(mockEntity(i));
         }
-        return books;
+        int start = Math.min(page * size, books.size());
+        int end = Math.min(start + size, books.size());
+        List<Book> sublist = books.subList(start, end);
+        return new PageImpl<>(sublist, PageRequest.of(page, size), books.size());
     }
+    
 
     public List<BookRequest> mockDtoList() {
         List<BookRequest> books = new ArrayList<>();

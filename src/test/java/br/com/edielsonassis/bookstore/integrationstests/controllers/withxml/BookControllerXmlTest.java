@@ -6,17 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -26,6 +26,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
 import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
+import br.com.edielsonassis.bookstore.integrationstests.dtos.page.PagedModelBook;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.UserSigninRequest;
@@ -33,7 +34,7 @@ import br.com.edielsonassis.bookstore.integrationstests.dtos.response.BookRespon
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.TokenAndRefreshTokenResponse;
 import br.com.edielsonassis.bookstore.model.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
-import br.com.edielsonassis.bookstore.util.MediaType;
+import br.com.edielsonassis.bookstore.utils.constants.MediaType;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -41,6 +42,8 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 
 @TestMethodOrder(OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class BookControllerXmlTest extends AbstractIntegrationTest {
     
@@ -208,13 +211,14 @@ public class BookControllerXmlTest extends AbstractIntegrationTest {
         assertEquals("New Description Test", persistedBook.getDescription());
         assertEquals("2008-08-01", persistedBook.getLaunchDate().toString());
     }
-
+    
     @Test
     @Order(4)
-    @DisplayName("When find all books then return BookResponse list")
-    void testWhenFindAllBooksThenReturnBookResponseList() throws JsonMappingException, JsonProcessingException {
+    @DisplayName("When find book by name then return BookResponse")
+    void testWhenFindBookByNameThenReturnBookResponse() throws JsonMappingException, JsonProcessingException {
         var content = given().spec(specification)
                 .basePath(BASE_PATH)
+                .queryParams("page", 0, "size", 10, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -223,7 +227,8 @@ public class BookControllerXmlTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<BookResponse> list = Arrays.asList(objectMapper.readValue(content, BookResponse[].class));
+        PagedModelBook wrapper = objectMapper.readValue(content, PagedModelBook.class);
+        var list = wrapper.getContent();
 
         assertEquals(1, list.size());
 
@@ -246,6 +251,43 @@ public class BookControllerXmlTest extends AbstractIntegrationTest {
 
     @Test
     @Order(5)
+    @DisplayName("When find all books then return BookResponse list")
+    void testWhenFindAllBooksThenReturnBookResponseList() throws JsonMappingException, JsonProcessingException {
+        var content = given().spec(specification)
+                .basePath(BASE_PATH)
+                .queryParams("page", 0, "size", 10, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        PagedModelBook wrapper = objectMapper.readValue(content, PagedModelBook.class);
+		var list = wrapper.getContent();
+
+        assertEquals(1, list.size());
+
+        var persistedBook = list.get(0);
+
+        assertNotNull(persistedBook);
+        assertNotNull(persistedBook.getBookId());
+        assertNotNull(persistedBook.getAuthor());
+        assertNotNull(persistedBook.getTitle());
+        assertNotNull(persistedBook.getDescription());
+        assertNotNull(persistedBook.getLaunchDate());
+        
+        assertTrue(persistedBook.getBookId() > 0);
+        
+        assertEquals("New Author Test", persistedBook.getAuthor());
+        assertEquals("New Title Test", persistedBook.getTitle());
+        assertEquals("New Description Test", persistedBook.getDescription());
+        assertEquals("2008-08-01", persistedBook.getLaunchDate().toString());
+    }
+
+    @Test
+    @Order(6)
     @DisplayName("When delete book then return no content")
     void testWhenDeleteBookThenReturnNoContent() throws JsonMappingException, JsonProcessingException {
         given().spec(specification)

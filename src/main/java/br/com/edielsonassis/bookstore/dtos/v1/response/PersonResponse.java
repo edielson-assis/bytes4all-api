@@ -23,7 +23,7 @@ public class PersonResponse extends RepresentationModel<PersonResponse> implemen
     @Schema(description = "Last name of the person", example = "Smith")
     private String lastName;
 
-    @Schema(description = "Gender of the person", example = "MALE")
+    @Schema(description = "Gender of the person", example = "Male")
     private Gender gender;
 
     @Schema(description = "Address information of the person")

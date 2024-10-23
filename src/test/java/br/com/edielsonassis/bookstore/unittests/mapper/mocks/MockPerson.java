@@ -3,6 +3,10 @@ package br.com.edielsonassis.bookstore.unittests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+
 import br.com.edielsonassis.bookstore.dtos.v1.request.AddressRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
@@ -24,12 +28,16 @@ public class MockPerson {
         return mockUpdateDto(0);
     }
     
-    public List<Person> mockEntityList() {
-        List<Person> persons = new ArrayList<>();
+    public Page<Person> mockEntityList(int page, int size) {
+        List<Person> people = new ArrayList<>();
+    
         for (int i = 0; i < 14; i++) {
-            persons.add(mockEntity(i));
+            people.add(mockEntity(i));
         }
-        return persons;
+        int start = Math.min(page * size, people.size());
+        int end = Math.min(start + size, people.size());
+        List<Person> sublist = people.subList(start, end);
+        return new PageImpl<>(sublist, PageRequest.of(page, size), people.size());
     }
 
     public List<PersonRequest> mockDtoList() {

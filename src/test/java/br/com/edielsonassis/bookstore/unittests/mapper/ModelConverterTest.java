@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
@@ -36,8 +37,8 @@ class ModelConverterTest {
 
     @Test
     void parseEntityListToDtoListTest() {
-        List<PersonResponse> outputList = Mapper.parseListObjects(inputObject.mockEntityList(), PersonResponse.class);
-        PersonResponse outputZero = outputList.get(0);
+        Page<PersonResponse> outputList = Mapper.parseListObjects(inputObject.mockEntityList(0, 14), PersonResponse.class);
+        PersonResponse outputZero = outputList.getContent().get(0);
         
         assertEquals(Long.valueOf(0L), outputZero.getPersonId());
         assertEquals("First Name Test0", outputZero.getFirstName());
@@ -45,7 +46,7 @@ class ModelConverterTest {
         assertEquals(addressDto(0), outputZero.getAddress());
         assertEquals("Male", outputZero.getGender().getValue());
         
-        PersonResponse outputSeven = outputList.get(7);
+        PersonResponse outputSeven = outputList.getContent().get(7);
         
         assertEquals(Long.valueOf(7L), outputSeven.getPersonId());
         assertEquals("First Name Test7", outputSeven.getFirstName());
@@ -53,7 +54,7 @@ class ModelConverterTest {
         assertEquals(addressDto(7), outputSeven.getAddress());
         assertEquals("Female", outputSeven.getGender().getValue());
         
-        PersonResponse outputTwelve = outputList.get(12);
+        PersonResponse outputTwelve = outputList.getContent().get(12);
         
         assertEquals(Long.valueOf(12L), outputTwelve.getPersonId());
         assertEquals("First Name Test12", outputTwelve.getFirstName());

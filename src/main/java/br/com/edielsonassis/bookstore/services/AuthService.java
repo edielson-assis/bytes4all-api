@@ -18,7 +18,7 @@ import br.com.edielsonassis.bookstore.model.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
 import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
 import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;
-import br.com.edielsonassis.bookstore.util.component.AuthenticatedUser;
+import br.com.edielsonassis.bookstore.utils.component.AuthenticatedUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +36,7 @@ public class AuthService {
 	private static final String USER_PERMISSION = "COMMON_USER";
 
 	public UserResponse signup(UserSignupRequest userRequest) {
-		User user = Mapper.parseObject(userRequest, User.class);
+		var user = Mapper.parseObject(userRequest, User.class);
         validateEmailNotExists(user);
         encryptPassword(user);
 		getPermission(user);
@@ -72,7 +72,7 @@ public class AuthService {
 
 	private synchronized void validateEmailNotExists(User user) {
 		log.info("Verifying the user's email: {}", user.getEmail());
-        boolean exists = repository.existsByEmail(user.getEmail().toLowerCase());
+        var exists = repository.existsByEmail(user.getEmail().toLowerCase());
         if (exists) {
             log.error("Email already exists: {}", user.getEmail());
             throw new ValidationException("Email already exists");
@@ -90,7 +90,7 @@ public class AuthService {
 	}
 
 	private TokenAndRefreshTokenResponse authenticateUser(UserSigninRequest data) {
-		String username = data.getEmail();
+		var username = data.getEmail();
 		try {
 			log.debug("Authenticating user with email: {}", username);
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));

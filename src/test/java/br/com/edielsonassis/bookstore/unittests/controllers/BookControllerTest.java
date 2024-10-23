@@ -2,6 +2,8 @@ package br.com.edielsonassis.bookstore.unittests.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -21,6 +23,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -117,21 +122,40 @@ class BookControllerTest {
 
     @Test
     @WithMockUser
-    @DisplayName("When find all books then return BookResponse list")
-    void testWhenFindAllBooksThenReturnBookResponseList() throws JsonProcessingException, Exception {
-        List<BookResponse> list = List.of(book);
+    @DisplayName("When find book by name then return BookResponse")
+    void testWhenFindBookByNameThenReturnBookResponse() throws JsonProcessingException, Exception {
+        Page<BookResponse> list = new PageImpl<>(List.of(book), PageRequest.of(0, 1), 1);
 
-        given(service.findAllBooks()).willReturn(list);
+        given(service.findBookByName(anyString(), anyInt(), anyInt(), anyString())).willReturn(list);
 
-        ResultActions response = mockMvc.perform(get(PATH));
+        ResultActions response = mockMvc.perform(get(PATH.concat("/get/name/{name}"), "tle").param("page", "0")  .param("size", "1").param("direction", "asc"));
 
         response.andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$.size()", is(list.size())))
-                .andExpect(jsonPath("$.[0].bookId", is(list.get(0).getBookId().intValue())))
-                .andExpect(jsonPath("$.[0].author", is(list.get(0).getAuthor())))
-                .andExpect(jsonPath("$.[0].launchDate", is(list.get(0).getLaunchDate().toString())))
-                .andExpect(jsonPath("$.[0].title", is(list.get(0).getTitle())))
-                .andExpect(jsonPath("$.[0].description", is(list.get(0).getDescription())));
+                .andExpect(jsonPath("$._embedded.bookResponseList.size()", is(list.getSize())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].bookId", is(book.getBookId().intValue())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].author", is(book.getAuthor())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].launchDate", is(book.getLaunchDate().toString())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].title", is(book.getTitle())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())));
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("When find all books then return BookResponse list")
+    void testWhenFindAllBooksThenReturnBookResponseList() throws JsonProcessingException, Exception {
+        Page<BookResponse> list = new PageImpl<>(List.of(book), PageRequest.of(0, 1), 1);
+
+        given(service.findAllBooks(anyInt(), anyInt(), anyString())).willReturn(list);
+
+        ResultActions response = mockMvc.perform(get(PATH).param("page", "0")  .param("size", "1").param("direction", "asc"));
+
+        response.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$._embedded.bookResponseList.size()", is(list.getSize())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].bookId", is(book.getBookId().intValue())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].author", is(book.getAuthor())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].launchDate", is(book.getLaunchDate().toString())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].title", is(book.getTitle())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())));
     }
 
     @Test

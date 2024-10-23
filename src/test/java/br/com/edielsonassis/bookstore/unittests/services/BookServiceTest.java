@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
@@ -33,6 +35,7 @@ import br.com.edielsonassis.bookstore.services.BookService;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockBook;
+import br.com.edielsonassis.bookstore.utils.constants.DefaultValue;
 
 @TestInstance(Lifecycle.PER_METHOD)
 @ExtendWith(MockitoExtension.class)
@@ -106,18 +109,18 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("When find all books then return BookResponse list")
-    void testWhenFindAllBooksThenReturnBookResponseList() {
-        List<Book> list = input.mockEntityList(); 
+    @DisplayName("When find book by name then return BookResponse")
+    void testWhenFindBookByNameThenReturnBookResponse() {
+        Page<Book> list = input.mockEntityList(DefaultValue.PAGE, DefaultValue.SIZE); 
 
-        when(repository.findAll()).thenReturn(list);
+        when(repository.findBookByName(anyString(), any(Pageable.class))).thenReturn(list);
 
-        var books = service.findAllBooks();
+        var books = service.findBookByName("tle ", DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION);
 
         assertNotNull(books);
-		assertEquals(14, books.size());
+		assertEquals(10, books.getSize());
 		
-		var bookOne = books.get(NUMBER_ONE);
+		var bookOne = books.get().toList().get(NUMBER_ONE);
 		
 		assertNotNull(bookOne);
         assertNotNull(bookOne.getBookId());
@@ -128,7 +131,33 @@ class BookServiceTest {
         assertEquals("Title Test1", bookOne.getTitle());
         assertEquals("Description Test1", bookOne.getDescription());
         
-        verify(repository, times(NUMBER_ONE)).findAll();
+        verify(repository, times(NUMBER_ONE)).findBookByName(anyString(), any(Pageable.class));
+    }
+
+    @Test
+    @DisplayName("When find all books then return BookResponse list")
+    void testWhenFindAllBooksThenReturnBookResponseList() {
+        Page<Book> list = input.mockEntityList(DefaultValue.PAGE, DefaultValue.SIZE); 
+
+        when(repository.findAll(any(Pageable.class))).thenReturn(list);
+
+        var books = service.findAllBooks(DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION);
+
+        assertNotNull(books);
+		assertEquals(10, books.getSize());
+		
+		var bookOne = books.get().toList().get(NUMBER_ONE);
+		
+		assertNotNull(bookOne);
+        assertNotNull(bookOne.getBookId());
+        assertNotNull(bookOne.getLinks());
+        assertNotNull(bookOne.getLaunchDate());
+
+        assertEquals("Author Test1", bookOne.getAuthor());
+        assertEquals("Title Test1", bookOne.getTitle());
+        assertEquals("Description Test1", bookOne.getDescription());
+        
+        verify(repository, times(NUMBER_ONE)).findAll(any(Pageable.class));
     }
 
     @Test

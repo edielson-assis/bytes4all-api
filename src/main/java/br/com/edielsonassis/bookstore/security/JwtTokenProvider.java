@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import br.com.edielsonassis.bookstore.dtos.v1.response.TokenAndRefreshTokenResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.TokenResponse;
-import br.com.edielsonassis.bookstore.security.exceptions.InvalidJwtAuthenticationException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -161,7 +161,7 @@ public class JwtTokenProvider {
 		String tokenUsername = decodedJWT.getSubject();
 		if (!username.equals(tokenUsername)) {
 			log.error("Error during refresh token generation for user: " + username);
-			throw new InvalidJwtAuthenticationException("Failed to refresh the token for user: " + username);
+			throw new BadCredentialsException("Failed to refresh the token for user: " + username);
 		}
 	}
 }

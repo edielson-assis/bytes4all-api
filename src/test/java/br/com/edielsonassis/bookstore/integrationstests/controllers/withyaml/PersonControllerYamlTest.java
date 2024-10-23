@@ -5,17 +5,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import br.com.edielsonassis.bookstore.integrationstests.config.AbstractIntegrationTest;
 import br.com.edielsonassis.bookstore.integrationstests.config.TestConfig;
 import br.com.edielsonassis.bookstore.integrationstests.controllers.withyaml.mapper.YMLMapper;
+import br.com.edielsonassis.bookstore.integrationstests.dtos.page.PagedModelPerson;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.AddressRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.PersonRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.PersonUpdateRequest;
@@ -32,7 +32,7 @@ import br.com.edielsonassis.bookstore.integrationstests.dtos.response.TokenAndRe
 import br.com.edielsonassis.bookstore.model.User;
 import br.com.edielsonassis.bookstore.model.enums.Gender;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
-import br.com.edielsonassis.bookstore.util.MediaType;
+import br.com.edielsonassis.bookstore.utils.constants.MediaType;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -43,6 +43,8 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 @TestMethodOrder(OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class PersonControllerYamlTest extends AbstractIntegrationTest{
 	
@@ -257,23 +259,25 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 		assertEquals("City Test", content.getAddress().getCity());
 		assertEquals("ST", content.getAddress().getState());
     }
-
-    @Test
+	
+	@Test
     @Order(6)
-    @DisplayName("When find all people then return PersonResponse list")
-    void testWhenFindAllPeopleThenReturnPersonResponseList() throws JsonMappingException, JsonProcessingException {
-        var content = given().spec(specification)
+    @DisplayName("When find person by name then return PersonResponse")
+    void testWhenFindPersonByNameThenReturnPersonResponse() throws JsonMappingException, JsonProcessingException {
+        var wrapper = given().spec(specification)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_3000)
-                .basePath(BASE_PATH)
+                .basePath(BASE_PATH.concat("/get/name/"))
+				.pathParam("name", "rst")
+				.queryParams("page", 0, "size", 10, "direction", "asc")
                 .when()
-                .get()
+                .get("{name}")
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(PersonResponse[].class, objectMapper);
+                .as(PagedModelPerson.class, objectMapper);
 
-        List<PersonResponse> list = Arrays.asList(content);
+		var list = wrapper.getContent();
 
         assertEquals(1, list.size());
 
@@ -297,6 +301,44 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 
     @Test
     @Order(7)
+    @DisplayName("When find all people then return PersonResponse list")
+    void testWhenFindAllPeopleThenReturnPersonResponseList() throws JsonMappingException, JsonProcessingException {
+        var wrapper = given().spec(specification)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_3000)
+                .basePath(BASE_PATH)
+				.queryParams("page", 0, "size", 10, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(PagedModelPerson.class, objectMapper);
+
+		var list = wrapper.getContent();
+
+        assertEquals(1, list.size());
+
+        var persistedPerson = list.get(0);
+
+        assertNotNull(persistedPerson);		
+		assertNotNull(persistedPerson.getPersonId());
+		assertNotNull(persistedPerson.getFirstName());
+		assertNotNull(persistedPerson.getLastName());
+		assertNotNull(persistedPerson.getAddress());
+		assertNotNull(persistedPerson.getGender());
+		
+		assertTrue(persistedPerson.getPersonId() > 0);
+		
+		assertEquals("New First Name Test", persistedPerson.getFirstName());
+		assertEquals("New Last Name Test", persistedPerson.getLastName());
+		assertEquals("Female", persistedPerson.getGender().getValue());
+		assertEquals("City Test", persistedPerson.getAddress().getCity());
+		assertEquals("ST", persistedPerson.getAddress().getState());
+    }
+
+    @Test
+    @Order(8)
     @DisplayName("When delete person then return no content")
     void testWhenDeletePersonThenReturnNoContent() throws JsonMappingException, JsonProcessingException {
         given().spec(specification)

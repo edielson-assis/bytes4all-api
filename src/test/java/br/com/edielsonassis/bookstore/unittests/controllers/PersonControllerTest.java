@@ -2,6 +2,8 @@ package br.com.edielsonassis.bookstore.unittests.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -20,6 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -120,22 +125,42 @@ class PersonControllerTest {
 
     @Test
     @WithMockUser
+    @DisplayName("When find person by name then return PersonResponse")
+    void testWhenFindPersonByNameThenReturnPersonResponse() throws JsonProcessingException, Exception {
+        Page<PersonResponse> list = new PageImpl<>(List.of(person), PageRequest.of(0, 1), 1);
+
+        given(service.findPersonByName(anyString(), anyInt(), anyInt(), anyString())).willReturn(list);
+
+        ResultActions response = mockMvc.perform(get(PATH.concat("/get/name/{name}"), "rst").param("page", "0").param("size", "1").param("direction", "asc"));
+
+        response.andDo(print()).andExpect(status().isOk())
+            .andExpect(jsonPath("$._embedded.personResponseList.size()", is(list.getSize())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].personId", is(person.getPersonId().intValue())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].firstName", is(person.getFirstName())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].lastName", is(person.getLastName())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].gender", is(person.getGender().getValue())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].address.city", is(person.getAddress().getCity())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].address.state", is(person.getAddress().getState())));
+    }
+
+    @Test
+    @WithMockUser
     @DisplayName("When find all people then return PersonResponse list")
     void testWhenFindAllPeopleThenReturnPersonResponseList() throws JsonProcessingException, Exception {
-        List<PersonResponse> list = List.of(person);
+        Page<PersonResponse> list = new PageImpl<>(List.of(person), PageRequest.of(0, 1), 1);
 
-        given(service.findAllPeople()).willReturn(list);
+        given(service.findAllPeople(anyInt(), anyInt(), anyString())).willReturn(list);
 
-        ResultActions response = mockMvc.perform(get(PATH));
+        ResultActions response = mockMvc.perform(get(PATH).param("page", "0").param("size", "1").param("direction", "asc"));
 
-        response.andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$.size()", is(list.size())))
-                .andExpect(jsonPath("$.[0].personId", is(list.get(0).getPersonId().intValue())))
-                .andExpect(jsonPath("$.[0].firstName", is(list.get(0).getFirstName())))
-                .andExpect(jsonPath("$.[0].lastName", is(list.get(0).getLastName())))
-                .andExpect(jsonPath("$.[0].gender", is(list.get(0).getGender().getValue())))
-                .andExpect(jsonPath("$.[0].address.city", is(list.get(0).getAddress().getCity())))
-                .andExpect(jsonPath("$.[0].address.state", is(list.get(0).getAddress().getState())));
+        response.andDo(print()).andExpect(status().isOk())
+            .andExpect(jsonPath("$._embedded.personResponseList.size()", is(list.getSize())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].personId", is(person.getPersonId().intValue())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].firstName", is(person.getFirstName())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].lastName", is(person.getLastName())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].gender", is(person.getGender().getValue())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].address.city", is(person.getAddress().getCity())))
+            .andExpect(jsonPath("$._embedded.personResponseList[0].address.state", is(person.getAddress().getState())));
     }
 
     @Test

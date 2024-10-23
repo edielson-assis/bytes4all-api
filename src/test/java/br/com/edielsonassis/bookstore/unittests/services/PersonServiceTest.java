@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
@@ -34,6 +36,7 @@ import br.com.edielsonassis.bookstore.services.PersonService;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
+import br.com.edielsonassis.bookstore.utils.constants.DefaultValue;
 
 @TestInstance(Lifecycle.PER_METHOD)
 @ExtendWith(MockitoExtension.class)
@@ -107,18 +110,18 @@ class PersonServiceTest {
     }
 
     @Test
-    @DisplayName("When find all people then return PersonResponse list")
-    void testWhenFindAllPeopleThenReturnPersonResponseList() {
-        List<Person> list = input.mockEntityList(); 
+    @DisplayName("When find person by name then return PersonResponse")
+    void testWhenFindPersonByNameThenReturnPersonResponse() {
+        Page<Person> list = input.mockEntityList(DefaultValue.PAGE, DefaultValue.SIZE); 
 
-        when(repository.findAll()).thenReturn(list);
+        when(repository.findPersonByName(anyString(), any(Pageable.class))).thenReturn(list);
 
-        var people = service.findAllPeople();
+        var people = service.findPersonByName("rst", DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION);
 
         assertNotNull(people);
-		assertEquals(14, people.size());
+		assertEquals(10, people.getSize());
 		
-		var personOne = people.get(NUMBER_ONE);
+		var personOne = people.get().toList().get(NUMBER_ONE);
 		
 		assertNotNull(personOne);
         assertNotNull(personOne.getPersonId());
@@ -129,7 +132,33 @@ class PersonServiceTest {
         assertEquals("Female", personOne.getGender().getValue());
         assertEquals(address(NUMBER_ONE), personOne.getAddress().toString());
         
-        verify(repository, times(NUMBER_ONE)).findAll();
+        verify(repository, times(NUMBER_ONE)).findPersonByName(anyString(), any(Pageable.class));
+    }
+
+    @Test
+    @DisplayName("When find all people then return PersonResponse list")
+    void testWhenFindAllPeopleThenReturnPersonResponseList() {
+        Page<Person> list = input.mockEntityList(DefaultValue.PAGE, DefaultValue.SIZE); 
+
+        when(repository.findAll(any(Pageable.class))).thenReturn(list);
+
+        var people = service.findAllPeople(DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION);
+
+        assertNotNull(people);
+		assertEquals(10, people.getSize());
+		
+		var personOne = people.get().toList().get(NUMBER_ONE);
+		
+		assertNotNull(personOne);
+        assertNotNull(personOne.getPersonId());
+        assertNotNull(personOne.getLinks());
+
+        assertEquals("First Name Test1", personOne.getFirstName());
+		assertEquals("Last Name Test1", personOne.getLastName());
+        assertEquals("Female", personOne.getGender().getValue());
+        assertEquals(address(NUMBER_ONE), personOne.getAddress().toString());
+        
+        verify(repository, times(NUMBER_ONE)).findAll(any(Pageable.class));
     }
 
     @Test

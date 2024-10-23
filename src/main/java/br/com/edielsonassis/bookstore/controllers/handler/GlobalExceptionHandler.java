@@ -18,7 +18,6 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
-import br.com.edielsonassis.bookstore.security.exceptions.InvalidJwtAuthenticationException;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;
@@ -64,13 +63,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(JWTDecodeException.class)
     public ResponseEntity<ExceptionResponse> jwtError(JWTDecodeException exception, HttpServletRequest request) {
-        String error = "Access denied";
-        HttpStatus status = HttpStatus.FORBIDDEN;
-        return ResponseEntity.status(status).body(errors(status, error, exception, request));
-    }
-
-    @ExceptionHandler(InvalidJwtAuthenticationException.class)
-    public ResponseEntity<ExceptionResponse> InvalidJwt(InvalidJwtAuthenticationException exception, HttpServletRequest request) {
         String error = "Access denied";
         HttpStatus status = HttpStatus.FORBIDDEN;
         return ResponseEntity.status(status).body(errors(status, error, exception, request));

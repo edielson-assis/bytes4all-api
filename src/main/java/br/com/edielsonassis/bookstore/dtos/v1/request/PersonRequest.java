@@ -29,7 +29,7 @@ public class PersonRequest implements Serializable {
     @Size(min = 3, message = "LastName must have at least {min} characters")
     private String lastName;
     
-    @Schema(description = "Gender of the person", example = "MALE", required = true)
+    @Schema(description = "Gender of the person", example = "Male", required = true)
     @NotNull(message = "Gender is required")
     private Gender gender;
 
