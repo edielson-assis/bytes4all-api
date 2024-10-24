@@ -10,9 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.AddressRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
-import br.com.edielsonassis.bookstore.model.Address;
-import br.com.edielsonassis.bookstore.model.Person;
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.Address;
+import br.com.edielsonassis.bookstore.models.Person;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 
 public class MockPerson {
 

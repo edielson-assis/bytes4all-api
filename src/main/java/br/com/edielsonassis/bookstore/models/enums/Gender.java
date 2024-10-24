@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.model.enums;
+package br.com.edielsonassis.bookstore.models.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

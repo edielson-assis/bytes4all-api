@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import br.com.edielsonassis.bookstore.model.Book;
+import br.com.edielsonassis.bookstore.models.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 

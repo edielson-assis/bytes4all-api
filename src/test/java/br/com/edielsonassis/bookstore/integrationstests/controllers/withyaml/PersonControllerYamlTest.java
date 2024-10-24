@@ -29,8 +29,8 @@ import br.com.edielsonassis.bookstore.integrationstests.dtos.request.PersonUpdat
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.UserSigninRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.PersonResponse;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.TokenAndRefreshTokenResponse;
-import br.com.edielsonassis.bookstore.model.User;
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.User;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
 import br.com.edielsonassis.bookstore.utils.constants.MediaType;
 import io.restassured.builder.RequestSpecBuilder;

@@ -1,8 +1,8 @@
-package br.com.edielsonassis.bookstore.model;
+package br.com.edielsonassis.bookstore.models;
 
 import java.io.Serializable;
 
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

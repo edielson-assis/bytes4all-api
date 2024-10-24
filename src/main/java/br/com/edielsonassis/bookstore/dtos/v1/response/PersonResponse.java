@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

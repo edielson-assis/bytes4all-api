@@ -11,7 +11,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
-import br.com.edielsonassis.bookstore.model.Book;
+import br.com.edielsonassis.bookstore.models.Book;
 import br.com.edielsonassis.bookstore.repositories.BookRepository;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;

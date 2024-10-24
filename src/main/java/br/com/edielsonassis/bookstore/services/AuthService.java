@@ -14,7 +14,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.response.TokenAndRefreshTokenRespo
 import br.com.edielsonassis.bookstore.dtos.v1.response.TokenResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.UserResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
-import br.com.edielsonassis.bookstore.model.User;
+import br.com.edielsonassis.bookstore.models.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
 import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
 import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;

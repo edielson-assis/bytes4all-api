@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.model;
+package br.com.edielsonassis.bookstore.models;
 
 import org.springframework.security.core.GrantedAuthority;
 

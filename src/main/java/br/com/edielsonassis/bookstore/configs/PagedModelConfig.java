@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.config;
+package br.com.edielsonassis.bookstore.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;

@@ -29,7 +29,7 @@ import org.springframework.data.domain.Pageable;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
-import br.com.edielsonassis.bookstore.model.Book;
+import br.com.edielsonassis.bookstore.models.Book;
 import br.com.edielsonassis.bookstore.repositories.BookRepository;
 import br.com.edielsonassis.bookstore.services.BookService;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;

@@ -3,7 +3,7 @@ package br.com.edielsonassis.bookstore.utils.component;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import br.com.edielsonassis.bookstore.model.User;
+import br.com.edielsonassis.bookstore.models.User;
 
 public class AuthenticatedUser {
     

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import br.com.edielsonassis.bookstore.model.User;
+import br.com.edielsonassis.bookstore.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     

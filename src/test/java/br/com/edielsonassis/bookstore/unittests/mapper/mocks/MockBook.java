@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
-import br.com.edielsonassis.bookstore.model.Book;
+import br.com.edielsonassis.bookstore.models.Book;
 
 public class MockBook {
 

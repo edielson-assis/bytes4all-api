@@ -3,7 +3,7 @@ package br.com.edielsonassis.bookstore.unittests.mapper.mocks;
 import br.com.edielsonassis.bookstore.dtos.v1.request.UserSigninRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.UserSignupRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.UserResponse;
-import br.com.edielsonassis.bookstore.model.User;
+import br.com.edielsonassis.bookstore.models.User;
 
 public class MockUser {
 

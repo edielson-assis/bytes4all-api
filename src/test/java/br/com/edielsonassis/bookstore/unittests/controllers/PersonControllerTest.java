@@ -41,7 +41,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
 import br.com.edielsonassis.bookstore.security.SecurityConfig;
 import br.com.edielsonassis.bookstore.services.PersonService;

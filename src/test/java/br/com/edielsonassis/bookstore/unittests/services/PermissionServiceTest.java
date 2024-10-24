@@ -21,7 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.edielsonassis.bookstore.model.Permission;
+import br.com.edielsonassis.bookstore.models.Permission;
 import br.com.edielsonassis.bookstore.repositories.PermissionRepository;
 import br.com.edielsonassis.bookstore.services.PermissionService;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;

@@ -1,4 +1,4 @@
-package br.com.edielsonassis.bookstore.config;
+package br.com.edielsonassis.bookstore.configs;
 
 import java.util.List;
 

@@ -11,8 +11,8 @@ import org.springframework.data.domain.Page;
 import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
-import br.com.edielsonassis.bookstore.model.Address;
-import br.com.edielsonassis.bookstore.model.Person;
+import br.com.edielsonassis.bookstore.models.Address;
+import br.com.edielsonassis.bookstore.models.Person;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
 
 class ModelConverterTest {

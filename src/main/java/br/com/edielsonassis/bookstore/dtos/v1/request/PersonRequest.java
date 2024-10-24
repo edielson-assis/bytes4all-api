@@ -2,7 +2,7 @@ package br.com.edielsonassis.bookstore.dtos.v1.request;
 
 import java.io.Serializable;
 
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

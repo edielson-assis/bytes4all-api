@@ -11,7 +11,7 @@ import br.com.edielsonassis.bookstore.dtos.v1.request.PersonRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.PersonUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
-import br.com.edielsonassis.bookstore.model.Person;
+import br.com.edielsonassis.bookstore.models.Person;
 import br.com.edielsonassis.bookstore.repositories.PersonRepository;
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;

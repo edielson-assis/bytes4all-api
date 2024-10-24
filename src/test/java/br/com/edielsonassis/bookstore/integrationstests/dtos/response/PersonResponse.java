@@ -2,7 +2,7 @@ package br.com.edielsonassis.bookstore.integrationstests.dtos.response;
 
 import java.io.Serializable;
 
-import br.com.edielsonassis.bookstore.model.enums.Gender;
+import br.com.edielsonassis.bookstore.models.enums.Gender;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package br.com.edielsonassis.bookstore.services;
 
 import org.springframework.stereotype.Service;
 
-import br.com.edielsonassis.bookstore.model.Permission;
+import br.com.edielsonassis.bookstore.models.Permission;
 import br.com.edielsonassis.bookstore.repositories.PermissionRepository;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
