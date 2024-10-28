@@ -59,7 +59,8 @@ public class AuthService {
         }
 		findUserByEmail(email);
 		log.info("Disabling user with email: {}", email);
-		repository.disableUser(email);
+		user.setEnabled(false);
+		repository.save(user);
 	}
 
 	private User findUserByEmail(String email) {

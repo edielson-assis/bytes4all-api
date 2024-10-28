@@ -1,0 +1,41 @@
+# CORS settings
+cors:
+  allowedMappings: ${ALLOWED_MAPPINGS}
+  allowedOrigins: ${ALLOWED_ORIGINS}
+  allowedMethods: ${ALLOWED_METHODS}
+  allowedHeaders: ${ALLOWED_HEADERS}
+  maxAge: ${MAX_AGE}
+
+# Security JWT settings
+security:
+  jwt:
+    token:
+      secret-key: ${SECRET_KEY}
+      expiration-length: ${EXPIRATION_TOKEN}
+      refresh-expiration-length: ${EXPIRATION_REFRESH_TOKEN}
+
+# Spring datasource settings
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  
+# Spring JPA settings  
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+
+# Server settings
+server:
+  error:
+    include-stacktrace: never
+
+# SpringDoc settings
+springdoc:
+  pathsToMatch: /api/v1/**
+  swagger-ui:
+    use-root-path: true

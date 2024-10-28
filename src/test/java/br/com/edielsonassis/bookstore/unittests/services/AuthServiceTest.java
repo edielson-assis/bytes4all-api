@@ -1,11 +1,11 @@
 package br.com.edielsonassis.bookstore.unittests.services;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -165,13 +165,16 @@ public class AuthServiceTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(user);
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(user));
-        doNothing().when(repository).disableUser(user.getEmail());
+        when(repository.save(any(User.class))).thenReturn(user);
 
         SecurityContextHolder.setContext(securityContext);
 
         service.disableUser(USER_EMAIL);
+        var savedUser =  repository.findByEmail(USER_EMAIL);
+
+        assertFalse(savedUser.get().isEnabled());
         
-        verify(repository, times(NUMBER_ONE)).disableUser(anyString());
+        verify(repository, times(NUMBER_ONE)).save(any(User.class));
     }
 
     @Test
@@ -184,6 +187,6 @@ public class AuthServiceTest {
         
         assertThrows(AccessDeniedException.class, () -> service.disableUser(WRONG_USER_EMAIL));
         
-        verify(repository, never()).disableUser(anyString());
+        verify(repository, never()).save(any(User.class));
     }
 }
