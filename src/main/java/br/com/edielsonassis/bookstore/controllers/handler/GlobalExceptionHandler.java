@@ -13,12 +13,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
+import br.com.edielsonassis.bookstore.services.exceptions.FileNotFoundException;
+import br.com.edielsonassis.bookstore.services.exceptions.FileStorageException;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.services.exceptions.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,8 +50,29 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(errors(status, error, exception, request));
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> resourceNotFound(FileNotFoundException exception, HttpServletRequest request) {
+        String error = "Not found";
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionResponse> badRequest(HttpMessageNotReadableException exception, HttpServletRequest request) {
+        String error = "Invalid request";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    public ResponseEntity<ExceptionResponse> badRequest(FileStorageException exception, HttpServletRequest request) {
+        String error = "Invalid request";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(errors(status, error, exception, request));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ExceptionResponse> badRequest(MaxUploadSizeExceededException exception, HttpServletRequest request) {
         String error = "Invalid request";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(errors(status, error, exception, request));

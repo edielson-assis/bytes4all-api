@@ -29,6 +29,17 @@ spring:
     show-sql: false
     open-in-view: false
 
+# File settings
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 2MB
+      max-request-size: 10MB
+
+file:
+  upload-dir: /Code/UploadDir  
+
 # Server settings
 server:
   error:
