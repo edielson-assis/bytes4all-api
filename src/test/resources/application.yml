@@ -37,6 +37,9 @@ spring:
       max-file-size: 2MB
       max-request-size: 10MB
 
+file:
+  upload-dir: /home/runner/work/bytes4all/ebook  
+
 # SpringDoc settings
 springdoc:
   pathsToMatch: /api/v1/**

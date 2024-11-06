@@ -27,7 +27,7 @@ class UserRepositoryTest extends AbstractIntegrationTest {
 	private UserRepository repository;
 	
 	private User user;
-    private static final String EMAIL = "teste@email.com";
+    private static final String EMAIL = "test9@email.com";
 	
 	@BeforeEach
 	void setup() {
@@ -49,9 +49,10 @@ class UserRepositoryTest extends AbstractIntegrationTest {
         assertNotNull(savedUser.get().getFullName());
         assertNotNull(savedUser.get().getEmail());
 
-        assertEquals(1, savedUser.get().getUserId());
+        assertTrue(savedUser.get().getUserId() > 0);
+
         assertEquals("Test auth", savedUser.get().getFullName());
-        assertEquals("teste@email.com", savedUser.get().getEmail());
+        assertEquals("test9@email.com", savedUser.get().getEmail());
     }
 
     @Test

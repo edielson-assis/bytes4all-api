@@ -1,3 +1,9 @@
+# Server settings
+server:
+  port: 80
+  error:
+    include-stacktrace: never
+
 # CORS settings
 cors:
   allowedMappings: ${ALLOWED_MAPPINGS}
@@ -57,16 +63,11 @@ spring:
     multipart:
       enabled: true
       file-size-threshold: 2KB
-      max-file-size: 2MB
-      max-request-size: 10MB
+      max-file-size: 4MB
+      max-request-size: 12MB
 
 file:
-  upload-dir: ${UPLOAD_FILE}
-
-# Server settings
-server:
-  error:
-    include-stacktrace: never
+  upload-dir: /bytes4all/ebook
 
 # SpringDoc settings
 springdoc:

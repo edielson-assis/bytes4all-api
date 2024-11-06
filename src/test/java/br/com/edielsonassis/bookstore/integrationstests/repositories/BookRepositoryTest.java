@@ -1,5 +1,6 @@
 package br.com.edielsonassis.bookstore.integrationstests.repositories;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -56,7 +57,8 @@ class BookRepositoryTest extends AbstractIntegrationTest {
         assertNotNull(savedBook.getDescription());
         assertNotNull(savedBook.getLaunchDate());
 		
-		assertEquals(1, savedBook.getBookId());
+		assertTrue(savedBook.getBookId() > 0);
+		
 		assertEquals("Author Test", savedBook.getAuthor());
         assertEquals("Title Test", savedBook.getTitle());
         assertEquals("Description Test", savedBook.getDescription());

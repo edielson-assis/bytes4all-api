@@ -42,7 +42,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
     private static UserSignupRequest userSignup;
 	private static TokenAndRefreshTokenResponse token;
     private static final String BASE_PATH = "/api/v1/auth";
-    private static final String USERNAME = "teste@email.com";
+    private static final String USERNAME = "test6@email.com";
 
     @BeforeAll
 	static void setup() {
@@ -50,7 +50,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
 		
 		userSignup = new UserSignupRequest();
         userSignup.setFullName("Test auth");
-        userSignup.setEmail("teste@email.com");
+        userSignup.setEmail("test6@email.com");
         userSignup.setPassword("1234567");
 	}
 
@@ -86,7 +86,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(content);
 
         assertEquals("Test auth", content.getFullName());
-        assertEquals("teste@email.com", content.getEmail());
+        assertEquals("test6@email.com", content.getEmail());
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
 	@DisplayName("Should perform login and return a JWT token and a refresh token")
     void testShouldPerformLoginAndReturnAJwtTokenAndARefreshToken() throws JsonMappingException, JsonProcessingException {
 		UserSigninRequest userSignin = new UserSigninRequest();
-        userSignin.setEmail("teste@email.com");
+        userSignin.setEmail("test6@email.com");
         userSignin.setPassword("1234567");
 		
 		token = given().spec(specification)

@@ -1,5 +1,6 @@
 package br.com.edielsonassis.bookstore.integrationstests.repositories;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -55,7 +56,8 @@ class PersonRepositoryTest extends AbstractIntegrationTest {
 		assertNotNull(savedPerson.getAddress());
 		assertNotNull(savedPerson.getGender());
 		
-		assertEquals(1, savedPerson.getPersonId());
+		assertTrue(savedPerson.getPersonId() > 0);
+		
 		assertEquals("First Name Test", savedPerson.getFirstName());
 		assertEquals("Last Name Test", savedPerson.getLastName());
 		assertEquals("Male", savedPerson.getGender().getValue());

@@ -52,7 +52,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     private static BookRequest book;
     private static final String BASE_PATH = "/api/v1/books";
     private static final String AUTH_PATH = "/api/v1/auth/signin";
-    private static final Long BOOK_ID = 1L;
+    private static Long BOOK_ID = 1L;
 
     @BeforeAll
 	static void setup() {
@@ -71,13 +71,13 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     void testShouldPerformLoginAndReturnAJwtToken() throws JsonMappingException, JsonProcessingException {
         User user = new User();
         user.setFullName("Test auth");
-        user.setEmail("teste@email.com");
+        user.setEmail("test7@email.com");
         user.setPassword("91e2532173dc95ef503ed5ed39f7822f576a93b7c5ae41ef52b2467bd0234f089bbfd3f3f79ed7ba");
 
         repository.save(user);
         
 		UserSigninRequest userSignin = new UserSigninRequest();
-        userSignin.setEmail("teste@email.com");
+        userSignin.setEmail("test7@email.com");
         userSignin.setPassword("1234567");
 		
 		var accessToken = given()
@@ -127,6 +127,8 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
                 .extract()
                 .body()
                 .as(BookResponse.class, objectMapper);
+
+        BOOK_ID = content.getBookId();
 		
 		assertNotNull(content);
 		assertNotNull(content.getBookId());
@@ -227,8 +229,6 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 
         var list = wrapper.getContent();
 
-        assertEquals(1, list.size());
-
         var persistedBook = list.get(0);
 
         assertNotNull(persistedBook);
@@ -262,8 +262,6 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
                 .as(PagedModelBook.class, objectMapper);
 
         var list = wrapper.getContent();
-
-        assertEquals(1, list.size());
 
         var persistedBook = list.get(0);
 

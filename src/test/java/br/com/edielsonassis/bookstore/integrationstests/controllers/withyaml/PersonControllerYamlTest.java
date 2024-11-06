@@ -52,7 +52,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 	private static PersonRequest person;
     private static final String BASE_PATH = "/api/v1/people";
     private static final String AUTH_PATH = "/api/v1/auth/signin";
-    private static final Long PERSON_ID = 1L;
+    private static Long PERSON_ID = 1L;
 	
 	@BeforeAll
 	static void setup() throws Exception {
@@ -71,13 +71,13 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
     void testShouldPerformLoginAndReturnAJwtToken() throws JsonMappingException, JsonProcessingException {
         User user = new User();
         user.setFullName("Test auth");
-        user.setEmail("teste@email.com");
+        user.setEmail("test8@email.com");
         user.setPassword("91e2532173dc95ef503ed5ed39f7822f576a93b7c5ae41ef52b2467bd0234f089bbfd3f3f79ed7ba");
 
         repository.save(user);
         
 		UserSigninRequest userSignin = new UserSigninRequest();
-        userSignin.setEmail("teste@email.com");
+        userSignin.setEmail("test8@email.com");
         userSignin.setPassword("1234567");
 		
 		var accessToken = given()
@@ -128,6 +128,8 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
                 .body()
                 .as(PersonResponse.class, objectMapper);
 		
+		PERSON_ID = content.getPersonId();
+
 		assertNotNull(content);
 		assertNotNull(content.getPersonId());
 		assertNotNull(content.getFirstName());
