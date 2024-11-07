@@ -25,8 +25,6 @@ services:
     image: edielsonassis/bytes4all
     container_name: bytes4all-api
     restart: always
-    build: ./src
-    working_dir: /bytes4all
     environment:
       TZ: America/Sao_Paulo
       SPRING.DATASOURCE.URL: jdbc:mysql://db:3308/${DATABASE_NAME}?useTimezone=true&serverTimezone=UTC
