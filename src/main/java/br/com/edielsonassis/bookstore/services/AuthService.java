@@ -33,7 +33,7 @@ public class AuthService {
 	private final PasswordEncoder encoder;
 	private final PermissionService permissionService;
 
-	private static final String USER_PERMISSION = "COMMON_USER";
+	private static final String USER_PERMISSION = "USER";
 
 	public UserResponse signup(UserSignupRequest userRequest) {
 		var user = Mapper.parseObject(userRequest, User.class);

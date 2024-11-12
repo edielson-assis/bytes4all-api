@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -27,6 +28,7 @@ import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookRequest
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.UserSigninRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.BookResponse;
+import br.com.edielsonassis.bookstore.integrationstests.dtos.response.BookUpdateResponse;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.TokenAndRefreshTokenResponse;
 import br.com.edielsonassis.bookstore.models.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
@@ -117,9 +119,15 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     @Order(1)
 	@DisplayName("When create a book then return BookResponse")
     void testWhenCreateBookThenReturnBookResponse() throws JsonMappingException, JsonProcessingException {		
-		var content = given().spec(specification)
-                .basePath(BASE_PATH.concat("/create"))
-                .body(book, objectMapper)
+		File file = new File("src/test/resources/test.pdf");
+        var content = given().spec(specification)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .basePath(BASE_PATH)
+                .multiPart("file", file, MediaType.APPLICATION_PDF_VALUE)
+                .param("author", book.getAuthor()) 
+                .param("title", book.getTitle())
+                .param("description", book.getDescription())
+                .param("launchDate", book.getLaunchDate().toString())
                 .when()
                 .post()
 				.then()
@@ -146,37 +154,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 	}
 
     @Test
-	@Order(2)
-	@DisplayName("When find book by ID then return BookResponse")
-    void testWhenFindBookByIdThenReturnBookResponse() throws JsonMappingException, JsonProcessingException {
-        var content = given().spec(specification)
-                .basePath(BASE_PATH.concat("/get"))
-                .pathParam("id", BOOK_ID)
-                .when()
-                .get("{id}")
-				.then()
-                .statusCode(200)
-                .extract()
-                .body()
-                .as(BookResponse.class, objectMapper);
-		
-		assertNotNull(content);
-		assertNotNull(content.getBookId());
-		assertNotNull(content.getAuthor());
-		assertNotNull(content.getTitle());
-		assertNotNull(content.getDescription());
-		assertNotNull(content.getLaunchDate());
-		
-		assertTrue(content.getBookId() > 0);
-		
-		assertEquals("Author Test", content.getAuthor());
-        assertEquals("Title Test", content.getTitle());
-        assertEquals("Description Test", content.getDescription());
-        assertEquals("2024-10-15", content.getLaunchDate().toString());
-	}
-
-    @Test
-    @Order(3)
+    @Order(2)
     @DisplayName("When update a book then return BookResponse")
     void testWhenUpdateBookThenReturnBookResponse() throws JsonMappingException, JsonProcessingException {
         var updateBook = new BookUpdateRequest();
@@ -187,7 +165,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         updateBook.setDescription("New Description Test");
         
         var content = given().spec(specification)
-                .basePath(BASE_PATH.concat("/update"))
+                .basePath(BASE_PATH)
                 .body(updateBook, objectMapper)
                 .when()
                 .put()
@@ -195,7 +173,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(BookResponse.class, objectMapper);
+                .as(BookUpdateResponse.class, objectMapper);
 
         assertNotNull(content);
         assertNotNull(content.getBookId());
@@ -213,7 +191,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     }
     
     @Test
-    @Order(4)
+    @Order(3)
     @DisplayName("When find book by name then return BookResponse")
     void testWhenFindBookByNameThenReturnBookResponse() throws JsonMappingException, JsonProcessingException {
         var wrapper = given().spec(specification)
@@ -247,7 +225,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     @DisplayName("When find all books then return BookResponse list")
     void testWhenFindAllBooksThenReturnBookResponseList() throws JsonMappingException, JsonProcessingException {
         var wrapper = given().spec(specification)
@@ -281,11 +259,11 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     @DisplayName("When delete book then return no content")
     void testWhenDeleteBookThenReturnNoContent() throws JsonMappingException, JsonProcessingException {
         given().spec(specification)
-            .basePath(BASE_PATH.concat("/delete"))
+            .basePath(BASE_PATH)
             .pathParam("id", BOOK_ID)
             .when()
             .delete("{id}")

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
+import br.com.edielsonassis.bookstore.dtos.v1.response.BookUpdateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,20 +35,6 @@ public interface BookControllerSwagger {
 		}
 	)
     ResponseEntity<BookResponse> createBook(BookRequest bookRequest);
-
-    @Operation(
-        summary = "Finds a Book",
-		description = "Finds a book by their Id",
-		tags = {"Books"},
-		responses = {
-			@ApiResponse(responseCode = "200", description = "Success", 
-				content = @Content(schema = @Schema(implementation = BookResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not found - Book not found", content = @Content),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
-		}
-	)
-    ResponseEntity<BookResponse> findBookById(@Parameter(description = "The Id of the book to find.") Long id);
 
     @Operation(
         summary = "Finds all Books", description = "Finds all Books",
@@ -80,14 +67,14 @@ public interface BookControllerSwagger {
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Updated book", 
-				content = @Content(schema = @Schema(implementation = BookResponse.class))),
+				content = @Content(schema = @Schema(implementation = BookUpdateResponse.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request - Something is wrong with the request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found - Book not found", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<BookResponse> updateBook(BookUpdateRequest bookRequest);
+    ResponseEntity<BookUpdateResponse> updateBook(BookUpdateRequest bookRequest);
 
     @Operation(
 		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},

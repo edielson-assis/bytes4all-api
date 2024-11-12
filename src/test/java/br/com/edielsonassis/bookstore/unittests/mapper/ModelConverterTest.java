@@ -8,146 +8,118 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 
-import br.com.edielsonassis.bookstore.dtos.v1.response.AddressResponse;
-import br.com.edielsonassis.bookstore.dtos.v1.response.PersonResponse;
+import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
-import br.com.edielsonassis.bookstore.models.Address;
-import br.com.edielsonassis.bookstore.models.Person;
-import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockPerson;
+import br.com.edielsonassis.bookstore.models.Book;
+import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockBook;
 
 class ModelConverterTest {
     
-    MockPerson inputObject;
+    MockBook inputObject;
 
     @BeforeEach
     void setUp() {
-        inputObject = new MockPerson();
+        inputObject = new MockBook();
     }
 
     @Test
     void parseEntityToDtoTest() {
-        PersonResponse output = Mapper.parseObject(inputObject.mockEntity(), PersonResponse.class);
+        BookResponse output = Mapper.parseObject(inputObject.mockEntity(), BookResponse.class);
         
-        assertEquals(Long.valueOf(0L), output.getPersonId());
-        assertEquals("First Name Test0", output.getFirstName());
-        assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(addressDto(0), output.getAddress());
-        assertEquals("Male", output.getGender().getValue());
+        assertEquals(Long.valueOf(0L), output.getBookId());
+        assertEquals("Author Test0", output.getAuthor());
+        assertEquals("Title Test0", output.getTitle());
+        assertEquals("Description Test0", output.getDescription());
     }
 
     @Test
     void parseEntityListToDtoListTest() {
-        Page<PersonResponse> outputList = Mapper.parseListObjects(inputObject.mockEntityList(0, 14), PersonResponse.class);
-        PersonResponse outputZero = outputList.getContent().get(0);
+        Page<BookResponse> outputList = Mapper.parseListObjects(inputObject.mockEntityList(0, 14), BookResponse.class);
+        BookResponse outputZero = outputList.getContent().get(0);
         
-        assertEquals(Long.valueOf(0L), outputZero.getPersonId());
-        assertEquals("First Name Test0", outputZero.getFirstName());
-        assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(addressDto(0), outputZero.getAddress());
-        assertEquals("Male", outputZero.getGender().getValue());
+        assertEquals(Long.valueOf(0L), outputZero.getBookId());
+        assertEquals("Author Test0", outputZero.getAuthor());
+        assertEquals("Title Test0", outputZero.getTitle());
+        assertEquals("Description Test0", outputZero.getDescription());
         
-        PersonResponse outputSeven = outputList.getContent().get(7);
+        BookResponse outputSeven = outputList.getContent().get(7);
         
-        assertEquals(Long.valueOf(7L), outputSeven.getPersonId());
-        assertEquals("First Name Test7", outputSeven.getFirstName());
-        assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(addressDto(7), outputSeven.getAddress());
-        assertEquals("Female", outputSeven.getGender().getValue());
+        assertEquals(Long.valueOf(7L), outputSeven.getBookId());
+        assertEquals("Author Test7", outputSeven.getAuthor());
+        assertEquals("Title Test7", outputSeven.getTitle());
+        assertEquals("Description Test7", outputSeven.getDescription());
         
-        PersonResponse outputTwelve = outputList.getContent().get(12);
+        BookResponse outputTwelve = outputList.getContent().get(12);
         
-        assertEquals(Long.valueOf(12L), outputTwelve.getPersonId());
-        assertEquals("First Name Test12", outputTwelve.getFirstName());
-        assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(addressDto(12), outputTwelve.getAddress());
-        assertEquals("Male", outputTwelve.getGender().getValue());
+        assertEquals(Long.valueOf(12L), outputTwelve.getBookId());
+        assertEquals("Author Test12", outputTwelve.getAuthor());
+        assertEquals("Title Test12", outputTwelve.getTitle());
+        assertEquals("Description Test12", outputTwelve.getDescription());
     }
 
     @Test
     void parseDtoToEntityTest() {
-        Person output = Mapper.parseObject(inputObject.mockDto(), Person.class);
+        Book output = Mapper.parseObject(inputObject.mockDto(), Book.class);
         
-        assertEquals("First Name Test0", output.getFirstName());
-        assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(address(0), output.getAddress());
-        assertEquals("Male", output.getGender().getValue());
+        assertEquals("Author Test0", output.getAuthor());
+        assertEquals("Title Test0", output.getTitle());
+        assertEquals("Description Test0", output.getDescription());
     }
 
     @Test
     void parseDtoListToEntityListTest() {
-        List<Person> outputList = Mapper.parseListObjects(inputObject.mockDtoList(), Person.class);
-        Person outputZero = outputList.get(0);
+        List<Book> outputList = Mapper.parseListObjects(inputObject.mockDtoList(), Book.class);
+        Book outputZero = outputList.get(0);
         
-        assertEquals("First Name Test0", outputZero.getFirstName());
-        assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(address(0), outputZero.getAddress());
-        assertEquals("Male", outputZero.getGender().getValue());
+        assertEquals("Author Test0", outputZero.getAuthor());
+        assertEquals("Title Test0", outputZero.getTitle());
+        assertEquals("Description Test0", outputZero.getDescription());
         
-        Person outputSeven = outputList.get(7);
+        Book outputSeven = outputList.get(7);
         
-        assertEquals("First Name Test7", outputSeven.getFirstName());
-        assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(address(7), outputSeven.getAddress());
-        assertEquals("Female", outputSeven.getGender().getValue());
+        assertEquals("Author Test7", outputSeven.getAuthor());
+        assertEquals("Title Test7", outputSeven.getTitle());
+        assertEquals("Description Test7", outputSeven.getDescription());
         
-        Person outputTwelve = outputList.get(12);
+        Book outputTwelve = outputList.get(12);
         
-        assertEquals("First Name Test12", outputTwelve.getFirstName());
-        assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(address(12), outputTwelve.getAddress());
-        assertEquals("Male", outputTwelve.getGender().getValue());
+        assertEquals("Author Test12", outputTwelve.getAuthor());
+        assertEquals("Title Test12", outputTwelve.getTitle());
+        assertEquals("Description Test12", outputTwelve.getDescription());
     }
 
     @Test
     void parseUpdateDtoToEntityTest() {
-        Person output = Mapper.parseObject(inputObject.mockUpdateDto(), Person.class);
+        Book output = Mapper.parseObject(inputObject.mockUpdateDto(), Book.class);
         
-        assertEquals(Long.valueOf(0L), output.getPersonId());
-        assertEquals("First Name Test0", output.getFirstName());
-        assertEquals("Last Name Test0", output.getLastName());
-        assertEquals(address(0), output.getAddress());
-        assertEquals("Male", output.getGender().getValue());
+        assertEquals(Long.valueOf(0L), output.getBookId());
+        assertEquals("Author Test0", output.getAuthor());
+        assertEquals("Title Test0", output.getTitle());
+        assertEquals("Description Test0", output.getDescription());
     }
 
     @Test
     void parseUpdateDtoListToEntityListTest() {
-        List<Person> outputList = Mapper.parseListObjects(inputObject.mockUpdateDtoList(), Person.class);
-        Person outputZero = outputList.get(0);
+        List<Book> outputList = Mapper.parseListObjects(inputObject.mockUpdateDtoList(), Book.class);
+        Book outputZero = outputList.get(0);
         
-        assertEquals(Long.valueOf(0L), outputZero.getPersonId());
-        assertEquals("First Name Test0", outputZero.getFirstName());
-        assertEquals("Last Name Test0", outputZero.getLastName());
-        assertEquals(address(0), outputZero.getAddress());
-        assertEquals("Male", outputZero.getGender().getValue());
+        assertEquals(Long.valueOf(0L), outputZero.getBookId());
+        assertEquals("Author Test0", outputZero.getAuthor());
+        assertEquals("Title Test0", outputZero.getTitle());
+        assertEquals("Description Test0", outputZero.getDescription());
         
-        Person outputSeven = outputList.get(7);
+        Book outputSeven = outputList.get(7);
         
-        assertEquals(Long.valueOf(7L), outputSeven.getPersonId());
-        assertEquals("First Name Test7", outputSeven.getFirstName());
-        assertEquals("Last Name Test7", outputSeven.getLastName());
-        assertEquals(address(7), outputSeven.getAddress());
-        assertEquals("Female", outputSeven.getGender().getValue());
+        assertEquals(Long.valueOf(7L), outputSeven.getBookId());
+        assertEquals("Author Test7", outputSeven.getAuthor());
+        assertEquals("Title Test7", outputSeven.getTitle());
+        assertEquals("Description Test7", outputSeven.getDescription());
         
-        Person outputTwelve = outputList.get(12);
+        Book outputTwelve = outputList.get(12);
         
-        assertEquals(Long.valueOf(12L), outputTwelve.getPersonId());
-        assertEquals("First Name Test12", outputTwelve.getFirstName());
-        assertEquals("Last Name Test12", outputTwelve.getLastName());
-        assertEquals(address(12), outputTwelve.getAddress());
-        assertEquals("Male", outputTwelve.getGender().getValue());
-    }
-
-    private AddressResponse addressDto(Integer number) {
-        AddressResponse addres = new AddressResponse();
-        addres.setCity("City Test" + number);
-        addres.setState("ST" + number);
-        return addres;
-    }
-
-    private Address address(Integer number) {
-        Address addres = new Address();
-        addres.setCity("City Test" + number);
-        addres.setState("ST" + number);
-        return addres;
+        assertEquals(Long.valueOf(12L), outputTwelve.getBookId());
+        assertEquals("Author Test12", outputTwelve.getAuthor());
+        assertEquals("Title Test12", outputTwelve.getTitle());
+        assertEquals("Description Test12", outputTwelve.getDescription());
     }
 }

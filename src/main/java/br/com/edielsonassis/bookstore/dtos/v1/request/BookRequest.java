@@ -3,6 +3,8 @@ package br.com.edielsonassis.bookstore.dtos.v1.request;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,4 +35,8 @@ public class BookRequest implements Serializable {
     @Schema(description = "Description of the book", example = "A book that teaches software developers how to write clean, maintainable, and efficient code.", required = true)
     @NotBlank(message = "Description is required")
 	private String description;
+
+    @Schema(description = "PDF files")
+    @NotNull(message = "File is required")
+    private MultipartFile file;
 }

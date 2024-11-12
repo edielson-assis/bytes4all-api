@@ -132,7 +132,7 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
     @DisplayName("When delete user then return no content")
     void testWhenDeleteUserThenReturnNoContent() throws JsonMappingException, JsonProcessingException {
         given().spec(specification)
-            .basePath(BASE_PATH.concat("/delete"))
+            .basePath(BASE_PATH)
             .pathParam("email", USERNAME)
             .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getRefreshToken())
             .when()

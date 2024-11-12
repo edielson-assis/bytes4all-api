@@ -1,3 +1,4 @@
+# Server settings
 server:
   port: 8888
 
@@ -34,8 +35,8 @@ spring:
     multipart:
       enabled: true
       file-size-threshold: 2KB
-      max-file-size: 2MB
-      max-request-size: 10MB
+      max-file-size: 4MB
+      max-request-size: 12MB
 
 file:
   upload-dir: /home/runner/work/bytes4all/ebook  

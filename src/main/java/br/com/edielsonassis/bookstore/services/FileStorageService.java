@@ -22,7 +22,7 @@ public class FileStorageService {
     
     private final Path fileStorageLocation;
 
-    public FileStorageService(FileStorageConfig fileStorageConfig) {
+    private FileStorageService(FileStorageConfig fileStorageConfig) {
         Path path = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath().normalize();
         this.fileStorageLocation = path;
         try {

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Schema(description = "Represents a book")
-public class BookResponse extends RepresentationModel<BookResponse> implements Serializable {
+public class BookUpdateResponse extends RepresentationModel<BookResponse> implements Serializable {
     
 	@Schema(description = "Unique identifier of the book", example = "1")
     private Long bookId;
@@ -31,7 +31,4 @@ public class BookResponse extends RepresentationModel<BookResponse> implements S
 
     @Schema(description = "Description of the book", example = "A book that teaches software developers how to write clean, maintainable, and efficient code.")
     private String description;
-
-    @Schema(description = "PDF files")
-    private String downloadUrl;
 }

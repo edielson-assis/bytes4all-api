@@ -127,7 +127,7 @@ public class AuthControllerTest {
     void testWhenDeleteUserThenReturnNoContent() throws JsonProcessingException, Exception {
         willDoNothing().given(service).disableUser(USERNAME);
 
-        ResultActions response = mockMvc.perform(delete(BASE_PATH.concat("/delete/{email}"), USERNAME));
+        ResultActions response = mockMvc.perform(delete(BASE_PATH.concat("/{email}"), USERNAME));
 
         response.andExpect(status().isNoContent()).andDo(print());
     }

@@ -52,15 +52,15 @@ public class AuthController implements AuthControllerSwagger {
 		return ResponseEntity.ok(token);
 	}
 	
-	@GetMapping(path = "/refresh/{username}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
+	@GetMapping(path = "/refresh/{email}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML})
     @Override
-	public ResponseEntity<TokenResponse> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
-        var token = authService.refreshToken(username, refreshToken);
+	public ResponseEntity<TokenResponse> refreshToken(@PathVariable("email") String email, @RequestHeader("Authorization") String refreshToken) {
+        var token = authService.refreshToken(email, refreshToken);
 		return ResponseEntity.ok(token);
 	}
 
 	@Transactional
-	@DeleteMapping(path = "/delete/{email}")
+	@DeleteMapping(path = "/{email}")
 	@Override
 	public ResponseEntity<Void> deleteUser(@PathVariable(value = "email") String email) {
 		authService.disableUser(email);

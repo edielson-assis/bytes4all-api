@@ -1,10 +1,9 @@
 <h1 align="center">Bytes4All</h1> 
 
-![Badge Concluído](https://img.shields.io/static/v1?label=Status&message=Em%20Desenvolvimento&color=success&style=for-the-badge)<br>
-![Badge Java](https://img.shields.io/static/v1?label=Java&message=21&color=orange&style=for-the-badge&logo=java)<br>
-![Badge Springboot](https://img.shields.io/static/v1?label=Springboot&message=v3.3.4&color=brightgreen&style=for-the-badge&logo=spring)<br>
-![Badge MySQL](https://img.shields.io/static/v1?label=MySQL&message=v8.0.33&color=orange&style=for-the-badge&logo=MySQL)<br>
-[![Docker Hub Repo](https://img.shields.io/docker/pulls/edielsonassis/bytes4all.svg)](https://hub.docker.com/repository/docker/edielsonassis/bytes4all)
+![Badge Concluído](https://img.shields.io/static/v1?label=Status&message=Em%20Desenvolvimento&color=success&style=for-the-badge)
+![Badge Java](https://img.shields.io/static/v1?label=Java&message=21&color=orange&style=for-the-badge&logo=java)
+![Badge Springboot](https://img.shields.io/static/v1?label=Springboot&message=v3.3.4&color=brightgreen&style=for-the-badge&logo=spring)
+![Badge MySQL](https://img.shields.io/static/v1?label=MySQL&message=v8.0.33&color=orange&style=for-the-badge&logo=MySQL)
 
 <br>
 

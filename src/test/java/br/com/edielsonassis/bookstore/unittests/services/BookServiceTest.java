@@ -7,7 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,18 +23,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.models.Book;
+import br.com.edielsonassis.bookstore.models.User;
 import br.com.edielsonassis.bookstore.repositories.BookRepository;
 import br.com.edielsonassis.bookstore.services.BookService;
-import br.com.edielsonassis.bookstore.services.exceptions.DataBaseException;
+import br.com.edielsonassis.bookstore.services.FileStorageService;
 import br.com.edielsonassis.bookstore.services.exceptions.ObjectNotFoundException;
 import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockBook;
+import br.com.edielsonassis.bookstore.unittests.mapper.mocks.MockUser;
 import br.com.edielsonassis.bookstore.utils.constants.DefaultValue;
 
 @TestInstance(Lifecycle.PER_METHOD)
@@ -44,9 +48,20 @@ class BookServiceTest {
     @Mock
     private BookRepository repository;
 
+    @Mock
+    private SecurityContext securityContext;
+
+    @Mock
+    private Authentication authentication;
+
+    @Mock
+    private FileStorageService fileService;
+
     @InjectMocks
     private BookService service;
 
+    private User user;
+    private MockUser inputUser; 
     private Book book;
     private BookRequest bookRequest;
     private MockBook input;
@@ -55,6 +70,9 @@ class BookServiceTest {
 
     @BeforeEach
     void setup() {
+        inputUser = new MockUser();
+        user = inputUser.user();
+
         input = new MockBook();
         book = input.mockEntity(NUMBER_ONE);
         bookRequest = input.mockDto(NUMBER_ONE);
@@ -63,7 +81,12 @@ class BookServiceTest {
     @Test
     @DisplayName("When create a book then return BookResponse")
     void testWhenCreateBookThenReturnBookResponse() {
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
+        when(bookRequest.getFile().getOriginalFilename()).thenReturn("test-file.pdf");
         when(repository.save(any(Book.class))).thenReturn(book);
+
+        SecurityContextHolder.setContext(securityContext);
 
         var savedBook = service.createBook(bookRequest);
 
@@ -77,35 +100,6 @@ class BookServiceTest {
         assertEquals("Description Test1", savedBook.getDescription());
         
         verify(repository, times(NUMBER_ONE)).save(any(Book.class));
-    }
-
-    @Test
-    @DisplayName("When find book by ID then return BookResponse")
-    void testWhenFindBookByIdThenReturnBookResponse() {
-        when(repository.findById(anyLong())).thenReturn(Optional.of(book));
-
-        var savedBook = service.findBookById(BOOK_ID);
-
-        assertNotNull(savedBook);
-        assertNotNull(savedBook.getBookId());
-        assertNotNull(savedBook.getLinks());
-        assertNotNull(savedBook.getLaunchDate());
-
-        assertEquals("Author Test1", savedBook.getAuthor());
-        assertEquals("Title Test1", savedBook.getTitle());
-        assertEquals("Description Test1", savedBook.getDescription());
-        
-        verify(repository, times(NUMBER_ONE)).findById(anyLong());
-    }
-
-    @Test
-    @DisplayName("When find book by ID then throw ObjectNotFoundException")
-    void testWhenFindBookByIdThenThrowObjectNotFoundException() {
-        when(repository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThrows(ObjectNotFoundException.class, () -> service.findBookById(BOOK_ID));
-        
-        verify(repository, times(NUMBER_ONE)).findById(anyLong());
     }
 
     @Test
@@ -166,8 +160,12 @@ class BookServiceTest {
         Book updatedBook = input.mockEntity(NUMBER_ONE);
         BookUpdateRequest bookRequest = input.mockUpdateDto(NUMBER_ONE);
 
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
         when(repository.findById(anyLong())).thenReturn(Optional.of(book));
         when(repository.save(any(Book.class))).thenReturn(updatedBook);
+
+        SecurityContextHolder.setContext(securityContext);
 
         var savedBook = service.updateBook(bookRequest);
 
@@ -185,24 +183,26 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("When delete book then return no content")
-    void testWhenDeleteBookThenReturnNoContent() {
-        when(repository.findById(anyLong())).thenReturn(Optional.of(book));
-        doNothing().when(repository).delete(book);
+    @DisplayName("When update a book then throw ObjectNotFoundException")
+    void testWhenFindBookByIdThenThrowObjectNotFoundException() {
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-        service.deleteBook(BOOK_ID);
+        assertThrows(ObjectNotFoundException.class, () -> service.updateBook(mock(BookUpdateRequest.class)));
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
-        verify(repository, times(NUMBER_ONE)).delete(book);
     }
 
     @Test
-    @DisplayName("When delete book then throw DataBaseException")
-    void testWhenDeleteBookThenThrowDataBaseException() {
+    @DisplayName("When delete book then return no content")
+    void testWhenDeleteBookThenReturnNoContent() {
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
         when(repository.findById(anyLong())).thenReturn(Optional.of(book));
-        doThrow(new DataIntegrityViolationException("Referential integrity violation")).when(repository).delete(book);
-        
-        assertThrows(DataBaseException.class, () -> service.deleteBook(BOOK_ID));
+        doNothing().when(repository).delete(book);
+
+        SecurityContextHolder.setContext(securityContext);
+
+        service.deleteBook(BOOK_ID);
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
         verify(repository, times(NUMBER_ONE)).delete(book);
