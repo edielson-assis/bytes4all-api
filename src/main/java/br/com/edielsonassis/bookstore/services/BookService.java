@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
-import br.com.edielsonassis.bookstore.dtos.v1.response.BookUpdateResponse;
 import br.com.edielsonassis.bookstore.mapper.Mapper;
 import br.com.edielsonassis.bookstore.models.Book;
 import br.com.edielsonassis.bookstore.models.User;
@@ -52,7 +51,7 @@ public class BookService {
         return repository.findAll(pageable).map(book -> Mapper.parseObject(book, BookResponse.class));
     }
 
-    public BookUpdateResponse updateBook(BookUpdateRequest bookRequest) {
+    public BookResponse updateBook(BookUpdateRequest bookRequest) {
         var book = findBookById(bookRequest.getBookId());
         hasPermission(book);
         var existingBook = book;
@@ -60,14 +59,12 @@ public class BookService {
         book.setDownloadUrl(existingBook.getDownloadUrl());
         book.setUser(existingBook.getUser());
         log.info("Updating book with name: {}", book.getTitle());
-        return Mapper.parseObject(repository.save(book), BookUpdateResponse.class);
+        return Mapper.parseObject(repository.save(book), BookResponse.class);
     }
 
     public void deleteBook(Long id) {
         var book = findBookById(id);
-        if (!(currentUser().equals(book.getUser()) || isAdmin(currentUser()))) {
-            throw new AccessDeniedException("You do not have permission to delete books");
-        }
+        hasPermission(book);
         log.info("Deleting book with ID: {}", book.getBookId());
         repository.delete(book);
     }

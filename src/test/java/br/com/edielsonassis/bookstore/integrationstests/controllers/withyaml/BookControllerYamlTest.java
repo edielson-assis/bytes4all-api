@@ -28,7 +28,6 @@ import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookRequest
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.request.UserSigninRequest;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.BookResponse;
-import br.com.edielsonassis.bookstore.integrationstests.dtos.response.BookUpdateResponse;
 import br.com.edielsonassis.bookstore.integrationstests.dtos.response.TokenAndRefreshTokenResponse;
 import br.com.edielsonassis.bookstore.models.User;
 import br.com.edielsonassis.bookstore.repositories.UserRepository;
@@ -55,6 +54,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     private static final String BASE_PATH = "/api/v1/books";
     private static final String AUTH_PATH = "/api/v1/auth/signin";
     private static Long BOOK_ID = 1L;
+    private static final String DOWNLOAD_URL = "http://localhost:8888/api/v1/books/download/test.pdf";
 
     @BeforeAll
 	static void setup() {
@@ -144,6 +144,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(content.getTitle());
 		assertNotNull(content.getDescription());
 		assertNotNull(content.getLaunchDate());
+        assertNotNull(content.getDownloadUrl());
 		
 		assertTrue(content.getBookId() > 0);
 		
@@ -151,6 +152,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertEquals("Title Test", content.getTitle());
         assertEquals("Description Test", content.getDescription());
         assertEquals("2024-10-15", content.getLaunchDate().toString());
+        assertEquals(DOWNLOAD_URL, content.getDownloadUrl());
 	}
 
     @Test
@@ -173,7 +175,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(BookUpdateResponse.class, objectMapper);
+                .as(BookResponse.class, objectMapper);
 
         assertNotNull(content);
         assertNotNull(content.getBookId());
@@ -181,6 +183,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(content.getTitle());
         assertNotNull(content.getDescription());
         assertNotNull(content.getLaunchDate());
+        assertNotNull(content.getDownloadUrl());
         
         assertTrue(content.getBookId() > 0);
         
@@ -188,6 +191,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertEquals("New Title Test", content.getTitle());
         assertEquals("New Description Test", content.getDescription());
         assertEquals("2008-08-01", content.getLaunchDate().toString());
+        assertEquals(DOWNLOAD_URL, content.getDownloadUrl());
     }
     
     @Test
@@ -215,6 +219,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(persistedBook.getTitle());
         assertNotNull(persistedBook.getDescription());
         assertNotNull(persistedBook.getLaunchDate());
+        assertNotNull(persistedBook.getDownloadUrl());
         
         assertTrue(persistedBook.getBookId() > 0);
         
@@ -222,6 +227,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertEquals("New Title Test", persistedBook.getTitle());
         assertEquals("New Description Test", persistedBook.getDescription());
         assertEquals("2008-08-01", persistedBook.getLaunchDate().toString());
+        assertEquals(DOWNLOAD_URL, persistedBook.getDownloadUrl());
     }
 
     @Test
@@ -249,6 +255,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(persistedBook.getTitle());
         assertNotNull(persistedBook.getDescription());
         assertNotNull(persistedBook.getLaunchDate());
+        assertNotNull(persistedBook.getDownloadUrl());
         
         assertTrue(persistedBook.getBookId() > 0);
         
@@ -256,6 +263,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
         assertEquals("New Title Test", persistedBook.getTitle());
         assertEquals("New Description Test", persistedBook.getDescription());
         assertEquals("2008-08-01", persistedBook.getLaunchDate().toString());
+        assertEquals(DOWNLOAD_URL, persistedBook.getDownloadUrl());
     }
 
     @Test

@@ -25,7 +25,6 @@ import br.com.edielsonassis.bookstore.controllers.swagger.BookControllerSwagger;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
-import br.com.edielsonassis.bookstore.dtos.v1.response.BookUpdateResponse;
 import br.com.edielsonassis.bookstore.services.BookService;
 import br.com.edielsonassis.bookstore.utils.constants.DefaultValue;
 import br.com.edielsonassis.bookstore.utils.constants.MediaType;
@@ -46,6 +45,7 @@ public class BookController implements BookControllerSwagger {
 	@Override
 	public ResponseEntity<BookResponse> createBook(@Valid BookRequest bookRequest) {
 		var book = service.createBook(bookRequest);
+		book.setDownloadUrl(downloadUrl(book));
 		book.add(linkTo(methodOn(BookController.class).findBookByName(book.getTitle(), DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION)).withSelfRel());
         return new ResponseEntity<>(book, HttpStatus.CREATED);
 	}
@@ -85,8 +85,9 @@ public class BookController implements BookControllerSwagger {
 		produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML}
 	)
 	@Override
-	public ResponseEntity<BookUpdateResponse> updateBook(@Valid @RequestBody BookUpdateRequest bookRequest) {
+	public ResponseEntity<BookResponse> updateBook(@Valid @RequestBody BookUpdateRequest bookRequest) {
 		var book = service.updateBook(bookRequest);
+		book.setDownloadUrl(downloadUrl(book));
 		book.add(linkTo(methodOn(BookController.class).findBookByName(book.getTitle(), DefaultValue.PAGE, DefaultValue.SIZE, DefaultValue.DIRECTION)).withSelfRel());
 		return new ResponseEntity<>(book, HttpStatus.OK);
 	}

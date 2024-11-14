@@ -67,6 +67,7 @@ class BookServiceTest {
     private MockBook input;
     private static final Long BOOK_ID = 1L;
     private static final Integer NUMBER_ONE = 1;
+    private static final Integer NUMBER_TWO = 2;
 
     @BeforeEach
     void setup() {
@@ -92,12 +93,18 @@ class BookServiceTest {
 
         assertNotNull(savedBook);
         assertNotNull(savedBook.getBookId());
+        assertNotNull(savedBook.getAuthor());
         assertNotNull(savedBook.getLinks());
+        assertNotNull(savedBook.getTitle());
+        assertNotNull(savedBook.getDescription());
 		assertNotNull(savedBook.getLaunchDate());
+		assertNotNull(savedBook.getDownloadUrl());
 
+        assertEquals(BOOK_ID, savedBook.getBookId());
         assertEquals("Author Test1", savedBook.getAuthor());
         assertEquals("Title Test1", savedBook.getTitle());
         assertEquals("Description Test1", savedBook.getDescription());
+        assertEquals("Download Test1", savedBook.getDownloadUrl());
         
         verify(repository, times(NUMBER_ONE)).save(any(Book.class));
     }
@@ -118,12 +125,18 @@ class BookServiceTest {
 		
 		assertNotNull(bookOne);
         assertNotNull(bookOne.getBookId());
+        assertNotNull(bookOne.getAuthor());
         assertNotNull(bookOne.getLinks());
-        assertNotNull(bookOne.getLaunchDate());
+        assertNotNull(bookOne.getTitle());
+        assertNotNull(bookOne.getDescription());
+		assertNotNull(bookOne.getLaunchDate());
+		assertNotNull(bookOne.getDownloadUrl());
 
+        assertEquals(BOOK_ID, bookOne.getBookId());
         assertEquals("Author Test1", bookOne.getAuthor());
         assertEquals("Title Test1", bookOne.getTitle());
         assertEquals("Description Test1", bookOne.getDescription());
+        assertEquals("Download Test1", bookOne.getDownloadUrl());
         
         verify(repository, times(NUMBER_ONE)).findBookByName(anyString(), any(Pageable.class));
     }
@@ -144,12 +157,18 @@ class BookServiceTest {
 		
 		assertNotNull(bookOne);
         assertNotNull(bookOne.getBookId());
+        assertNotNull(bookOne.getAuthor());
         assertNotNull(bookOne.getLinks());
-        assertNotNull(bookOne.getLaunchDate());
+        assertNotNull(bookOne.getTitle());
+        assertNotNull(bookOne.getDescription());
+		assertNotNull(bookOne.getLaunchDate());
+		assertNotNull(bookOne.getDownloadUrl());
 
+        assertEquals(BOOK_ID, bookOne.getBookId());
         assertEquals("Author Test1", bookOne.getAuthor());
         assertEquals("Title Test1", bookOne.getTitle());
         assertEquals("Description Test1", bookOne.getDescription());
+        assertEquals("Download Test1", bookOne.getDownloadUrl());
         
         verify(repository, times(NUMBER_ONE)).findAll(any(Pageable.class));
     }
@@ -157,7 +176,7 @@ class BookServiceTest {
     @Test
     @DisplayName("When update a book then return BookResponse")
     void testWhenUpdateBookThenReturnBookResponse() {
-        Book updatedBook = input.mockEntity(NUMBER_ONE);
+        Book updatedBook = input.mockEntity(NUMBER_TWO);
         BookUpdateRequest bookRequest = input.mockUpdateDto(NUMBER_ONE);
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -171,12 +190,17 @@ class BookServiceTest {
 
         assertNotNull(savedBook);
         assertNotNull(savedBook.getBookId());
+        assertNotNull(savedBook.getAuthor());
         assertNotNull(savedBook.getLinks());
-        assertNotNull(savedBook.getLaunchDate());
+        assertNotNull(savedBook.getTitle());
+        assertNotNull(savedBook.getDescription());
+		assertNotNull(savedBook.getLaunchDate());
+		assertNotNull(savedBook.getDownloadUrl());
 
-        assertEquals("Author Test1", savedBook.getAuthor());
-        assertEquals("Title Test1", savedBook.getTitle());
-        assertEquals("Description Test1", savedBook.getDescription());
+        assertEquals("Author Test2", savedBook.getAuthor());
+        assertEquals("Title Test2", savedBook.getTitle());
+        assertEquals("Description Test2", savedBook.getDescription());
+        assertEquals("Download Test2", savedBook.getDownloadUrl());
         
         verify(repository, times(NUMBER_ONE)).findById(anyLong());
         verify(repository, times(NUMBER_ONE)).save(any(Book.class));

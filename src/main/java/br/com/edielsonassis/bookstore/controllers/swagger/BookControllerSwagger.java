@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
-import br.com.edielsonassis.bookstore.dtos.v1.response.BookUpdateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +23,7 @@ public interface BookControllerSwagger {
     @Operation(
 		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},
         summary = "Adds a new Book",
-		description = "Adds a new Book by passing in a JSON, XML or YML representation of the book!",
+		description = "Adds a new Book",
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "201", description = "Created book",
@@ -37,7 +36,8 @@ public interface BookControllerSwagger {
     ResponseEntity<BookResponse> createBook(BookRequest bookRequest);
 
     @Operation(
-        summary = "Finds all Books", description = "Finds all Books",
+        summary = "Finds all Books", 
+		description = "Finds all Books",
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
@@ -49,7 +49,8 @@ public interface BookControllerSwagger {
     ResponseEntity<PagedModel<EntityModel<BookResponse>>> findAllBooks(Integer page, Integer size, String direction);
 
 	@Operation(
-        summary = "Finds a Book", description = "Search for one or more books by name",
+        summary = "Finds a Book", 
+		description = "Search for one or more books by name",
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Success", 
@@ -67,14 +68,14 @@ public interface BookControllerSwagger {
 		tags = {"Books"},
 		responses = {
 			@ApiResponse(responseCode = "200", description = "Updated book", 
-				content = @Content(schema = @Schema(implementation = BookUpdateResponse.class))),
+				content = @Content(schema = @Schema(implementation = BookResponse.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request - Something is wrong with the request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden - Authentication problem",  content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found - Book not found", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error - Server error", content = @Content)
 		}
 	)
-    ResponseEntity<BookUpdateResponse> updateBook(BookUpdateRequest bookRequest);
+    ResponseEntity<BookResponse> updateBook(BookUpdateRequest bookRequest);
 
     @Operation(
 		security = {@SecurityRequirement(name = SECURITY_SCHEME_KEY)},

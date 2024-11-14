@@ -42,7 +42,6 @@ import br.com.edielsonassis.bookstore.controllers.BookController;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.request.BookUpdateRequest;
 import br.com.edielsonassis.bookstore.dtos.v1.response.BookResponse;
-import br.com.edielsonassis.bookstore.dtos.v1.response.BookUpdateResponse;
 import br.com.edielsonassis.bookstore.security.JwtTokenProvider;
 import br.com.edielsonassis.bookstore.security.SecurityConfig;
 import br.com.edielsonassis.bookstore.services.BookService;
@@ -66,6 +65,7 @@ class BookControllerTest {
     private BookResponse book;
     private static final Long BOOK_ID = 1L;
     private static final String PATH = "/api/v1/books";
+    private static final String DOWNLOAD_URL = "http://api/v1/books";
 
     @BeforeEach
     void setup() {
@@ -75,7 +75,7 @@ class BookControllerTest {
         book.setLaunchDate(LocalDate.now());
         book.setTitle("Title Test");
         book.setDescription("Description Test");
-        book.setDownloadUrl(PATH);
+        book.setDownloadUrl(DOWNLOAD_URL);
     }
 
     @Test
@@ -118,7 +118,8 @@ class BookControllerTest {
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].author", is(book.getAuthor())))
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].launchDate", is(book.getLaunchDate().toString())))
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].title", is(book.getTitle())))
-                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())));
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].downloadUrl", is(book.getDownloadUrl())));
     }
 
     @Test
@@ -137,19 +138,21 @@ class BookControllerTest {
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].author", is(book.getAuthor())))
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].launchDate", is(book.getLaunchDate().toString())))
                 .andExpect(jsonPath("$._embedded.bookResponseList[0].title", is(book.getTitle())))
-                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())));
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].description", is(book.getDescription())))
+                .andExpect(jsonPath("$._embedded.bookResponseList[0].downloadUrl", is(book.getDownloadUrl())));
     }
 
     @Test
     @WithMockUser
     @DisplayName("When update a book then return BookResponse")
     void testWhenUpdateBookThenReturnBookResponse() throws JsonProcessingException, Exception {
-        var bookResponse = new BookUpdateResponse();
+        var bookResponse = new BookResponse();
         bookResponse.setBookId(BOOK_ID);
         bookResponse.setAuthor("New author Test");
         bookResponse.setLaunchDate(LocalDate.parse("2014-08-02"));
         bookResponse.setTitle("New title Test");
         bookResponse.setDescription("New description Test");
+        bookResponse.setDownloadUrl(DOWNLOAD_URL);
 
         given(service.updateBook(any(BookUpdateRequest.class))).willReturn(bookResponse);
 
@@ -161,7 +164,8 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.author", is(bookResponse.getAuthor())))
                 .andExpect(jsonPath("$.launchDate", is(bookResponse.getLaunchDate().toString())))
                 .andExpect(jsonPath("$.title", is(bookResponse.getTitle())))
-                .andExpect(jsonPath("$.description", is(bookResponse.getDescription())));
+                .andExpect(jsonPath("$.description", is(bookResponse.getDescription())))
+                .andExpect(jsonPath("$.downloadUrl", is(bookResponse.getDownloadUrl())));
     }
 
     @Test

@@ -17,4 +17,5 @@ public class BookResponse implements Serializable {
     private LocalDate launchDate;
     private String title;
     private String description;
+    private String downloadUrl;
 }

@@ -65,6 +65,7 @@ public class MockBook {
         book.setLaunchDate(LocalDate.now());
         book.setTitle("Title Test" + number);
         book.setDescription("Description Test" + number);
+        book.setDownloadUrl("Download Test" + number);
         book.setUser(new MockUser().user());
         return book;
     }
