@@ -4,19 +4,19 @@ server:
 
 # CORS settings
 cors:
-  allowedMappings: ${ALLOWED_MAPPINGS}
-  allowedOrigins: ${ALLOWED_ORIGINS}
-  allowedMethods: ${ALLOWED_METHODS}
-  allowedHeaders: ${ALLOWED_HEADERS}
-  maxAge: ${MAX_AGE}
+  allowedMappings: /**
+  allowedOrigins: http://localhost:3000,http://localhost:8080
+  allowedMethods: GET,POST,PUT,DELETE,PATCH
+  allowedHeaders: Content-Type,Authorization,Access-Control-Allow-Origin
+  maxAge: 3600
 
 # Security JWT settings
 security:
   jwt:
     token:
-      secret-key: ${SECRET_KEY}
-      expiration-length: ${EXPIRATION_TOKEN}
-      refresh-expiration-length: ${EXPIRATION_REFRESH_TOKEN}
+      secret-key: ${SECRET_KEY:1234567}
+      expiration-length: ${EXPIRATION_TOKEN:1}
+      refresh-expiration-length: ${EXPIRATION_REFRESH_TOKEN:1}
 
 # Spring datasource settings
 spring:
@@ -39,7 +39,7 @@ spring:
       max-request-size: 12MB
 
 file:
-  upload-dir: /home/runner/work/bytes4all/ebook  
+  upload-dir: /bytes4all/ebook  
 
 # SpringDoc settings
 springdoc:

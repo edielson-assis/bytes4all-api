@@ -7,7 +7,7 @@ server:
 # CORS settings
 cors:
   allowedMappings: /**
-  allowedOrigins: http://localhost:3000
+  allowedOrigins: http://localhost:3000,http://localhost:8080
   allowedMethods: GET,POST,PUT,DELETE,PATCH
   allowedHeaders: Content-Type,Authorization,Access-Control-Allow-Origin
   maxAge: 3600
