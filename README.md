@@ -1,7 +1,7 @@
 <h1 align="center">Bytes4All</h1> 
 
 ![Badge Concluído](https://img.shields.io/static/v1?label=Status&message=Concluído&color=success&style=for-the-badge)
-![Badge Java](https://img.shields.io/static/v1?label=Java&message=21&color=orange&style=for-the-badge&logo=java)
+![Badge Java](https://img.shields.io/static/v1?label=Java&message=17&color=orange&style=for-the-badge&logo=java)
 ![Badge Springboot](https://img.shields.io/static/v1?label=Springboot&message=v3.3.4&color=brightgreen&style=for-the-badge&logo=spring)
 ![Badge MySQL](https://img.shields.io/static/v1?label=MySQL&message=v8.0.33&color=orange&style=for-the-badge&logo=MySQL)
 ![Badge Docker](https://img.shields.io/static/v1?label=Docker&message=v27.3.1&color=blue&style=for-the-badge&logo=Docker)
@@ -92,7 +92,7 @@ Depois de clonar o projeto, abra o arquivo `application.yml` e mude o profile pa
 
 ## :books: Linguagens, dependencias e libs utilizadas 
 
-- [Java](https://docs.oracle.com/en/java/javase/21/docs/api/index.html)
+- [Java](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)
 - [Maven](https://maven.apache.org/ref/3.9.3/maven-core/index.html)
 - [Lombok](https://mvnrepository.com/artifact/org.projectlombok/lombok)
 - [MySQL Connector](https://mvnrepository.com/artifact/mysql/mysql-connector-java)
