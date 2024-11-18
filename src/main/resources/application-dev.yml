@@ -51,5 +51,5 @@ springdoc:
   pathsToMatch: /api/v1/**
   swagger-ui:
     use-root-path: true
-    urls:
-      url: ${SWAGGER_SERVER_URL:http://localhost:8080/v3/api-docs}
+  server:
+    url: http://localhost

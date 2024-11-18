@@ -74,5 +74,5 @@ springdoc:
   pathsToMatch: /api/v1/**
   swagger-ui:
     use-root-path: true
-    urls:
-      url: ${SWAGGER_SERVER_URL}
+  server:
+    url: ${SWAGGER_SERVER_URL}
