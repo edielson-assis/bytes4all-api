@@ -36,7 +36,7 @@ public class FileStorageService {
 
     public String storeFile(MultipartFile file) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        if (!filename.contains(".pdf")) {
+        if (!filename.endsWith(".pdf")) {
             log.warn("Attempted upload of a non-PDF file: {}", filename);
             throw new FileStorageException("Only PDF files are accepted.");
         }
@@ -53,6 +53,9 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String filename) {
+        if (!filename.endsWith(".pdf")) {
+            filename = filename.concat(".pdf");
+        }
         try {
             Path filePath = this.fileStorageLocation.resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
@@ -63,8 +66,8 @@ public class FileStorageService {
             log.info("File loaded successfully: {}", filename);
             return resource;
         } catch (Exception e) {
-            log.error("Failed to load file {}", filename, e);
-            throw new FileNotFoundException("File not found: " + filename, e);
+            log.error("Failed to load file {}", filename);
+            throw new FileNotFoundException("File not found: " + filename);
         }
     }
 }

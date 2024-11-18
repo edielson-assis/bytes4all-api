@@ -106,6 +106,6 @@ public class AuthService {
 	}
 
 	private boolean hasPermissionToDeleteUser(User user) {
-        return user.getPermissions().stream().anyMatch(permission -> permission.getDescription().equals("ADMIN") || permission.getDescription().equals("MANAGER"));
+        return user.getPermissions().stream().anyMatch(permission -> permission.getDescription().equals("ADMIN"));
     }
 }

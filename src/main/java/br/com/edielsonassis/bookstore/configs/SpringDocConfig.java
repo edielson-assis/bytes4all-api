@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SpringDocConfig {
@@ -23,7 +22,6 @@ public class SpringDocConfig {
 							.type(SecurityScheme.Type.HTTP)
 							.scheme("bearer")
 							.bearerFormat("JWT")))
-				.addServersItem(new Server().url("https://bytes4all-api.up.railway.app"))
 				.info(new Info()
 					.title("Bytes4All")
 					.version("v1.0.0")
@@ -34,6 +32,7 @@ public class SpringDocConfig {
 							.url("https://github.com/edielson-assis/bytes4all-api/blob/main/LICENSE"))
 					.contact(new Contact()
 							.name("Edielson Assis")
-							.email("grizos.ed@gmail.com")));
+							.email("grizos.ed@gmail.com")
+							.url("https://github.com/edielson-assis")));
 	}
 }

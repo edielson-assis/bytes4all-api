@@ -32,6 +32,6 @@ public class BookResponse extends RepresentationModel<BookResponse> implements S
     @Schema(description = "Description of the book", example = "A book that teaches software developers how to write clean, maintainable, and efficient code.")
     private String description;
 
-    @Schema(description = "PDF files")
+    @Schema(description = "PDF files", example = "http://localhost/api/v1/books/download/test.pdf")
     private String downloadUrl;
 }
